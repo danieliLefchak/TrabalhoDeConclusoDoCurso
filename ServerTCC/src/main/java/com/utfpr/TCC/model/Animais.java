@@ -43,6 +43,8 @@ public class Animais {
 
 	private String doencas;
 	
+	private Byte[] imagens;
+	
 	@JoinColumn(name = "entidade_id")
 	@ManyToOne
 	private Entidades entidade;
