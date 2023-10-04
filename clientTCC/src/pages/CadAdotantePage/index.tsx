@@ -1,7 +1,6 @@
 import { Card, DatePicker, Form, Input, InputNumber, Select } from "antd";
 
 export function CadAdotantesPage() {
-
     return(
         <>
             <div className="container">
