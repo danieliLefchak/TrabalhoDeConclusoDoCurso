@@ -15,7 +15,7 @@ export interface Animais {
 	especie: String;
 	dataCadastro: Date;
     doencas: String;
-    imagens: String;//conferir isso aqui
+    imagens: string;//conferir isso aqui
     entidade: Entidades;
 }
 

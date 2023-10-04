@@ -1,14 +1,44 @@
 import { Link, NavLink } from "react-router-dom";
 import logo from "../../assets/logo.png";
+import { Button, Dropdown, Space } from "antd";
+import type { MenuProps } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
 
 export function NavBar(){
+  const items: MenuProps['items'] = [
+    {
+      key: '1',
+      label: (
+        <Link to="/" className="text-decoration-none">
+          Sair
+        </Link>
+      ),
+    },
+    {
+      key: '2',
+      label: (
+        <Link to="/" className="text-decoration-none">
+          2nd menu item
+        </Link>
+      ),
+    },
+    {
+      key: '3',
+      label: (
+        <Link to="/" className="text-decoration-none">
+          3rd menu item
+        </Link>
+      ),
+    },
+  ];
+
   return(
       <div>
-        <nav id="navAni" className="navbar navbar-light navbar-expand">
+        <nav id="navAni" className="navbar navbar-expand">
           <Link to="/" className="navbar-brand">
             <img id="logoAni" src={logo} width="60" className="rounded-circle ms-4 me-2" alt="Animais"/>
           </Link>
-          <ul className="navbar-nav me-auto mb-2 mb-md-0">
+          <ul className="navbar-nav mx-auto mb-2 mb-md-0">
             <li className="nav-item">
               <NavLink
                 to="/"
@@ -50,13 +80,14 @@ export function NavBar(){
                 Cadastro de links
               </NavLink>
             </li>
-
-            <li className="nav-item ms-3">
-              <button className="btn fw-bold">
-                Sair
-              </button>
-            </li>
           </ul>
+          <div className="d-flex align-items-center">
+            <Space direction="vertical">
+              <Dropdown menu={{items}} placement="bottomRight">
+                <button id="btnNav" className="btn">Nome</button>
+              </Dropdown>
+            </Space>
+          </div>
         </nav>
       </div>
   );

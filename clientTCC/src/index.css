@@ -1,10 +1,63 @@
 :root {
-    --verdeNav: #bae6379d;
+    --verdeNav: #7dfa5bd2;
     --textoBanner: #f0f8ff;
+    --backGroundApp: #c5c5c51d;
+    --cinzaLogoDetalhe: #545455;
+    --cinzaLogoPassaro: #4D4C4C;
+    --verdeLogoCoelho: #CBE566;
+    --cinzaLogo: #757575c5;
+    --verdeLogo: #cce5667a;
+    --pretoLogo: #000000;
 }
 
+#cardFixBg{
+    border-color: var(--verdeLogo);
+    border-width: 0.12rem;
+}
+
+#cardFixBg:hover{
+    box-shadow: none;
+    border-color: var(--verdeLogoCoelho);
+    border-width: 0.15rem;
+    border-color: var(--verdeLogoCoelho);
+}
+
+/*parece que tem algo interfirindo com a cor de fundo
+  deixando ela mais "vibrante" que no rodape*/
 #navAni{
     background-color: var(--verdeNav);
+    padding: .2rem;
+}
+
+#btnNav{
+    border: none;
+    color: var(--cinzaLogoPassaro);
+    margin-right: 2rem;
+}
+
+#btnNav:hover{
+    color: var(--pretoLogo);
+    border: none;
+}
+
+#footAni{
+    background-color: var(--verdeNav);
+    color: var(--cinzaLogoPassaro);
+    text-align: center;
+    padding: 1rem;
+    margin-top: 2rem;
+}
+
+#cadText{
+    color: var(--cinzaLogoPassaro);
+}
+
+#cardCad{
+    background-color: var(--verdeLogo);
+}
+
+.backGroud{
+    background-color: var(--backGroundApp);
 }
 
 .banner {
@@ -16,4 +69,31 @@
     justify-content: center;
     flex-direction: column;
     color: var(--textoBanner);
+}
+
+.btnBanner{
+    background-color: var(--cinzaLogoDetalhe);
+    color: var(--textoBanner);
+}
+
+.btnBanner:hover{
+    background-color: var(--cinzaLogo);
+    color: var(--verdeNav);
+}
+
+.nav-link{
+    color: var(--cinzaLogoPassaro);
+}
+
+.nav-link:hover{
+    color: var(--pretoLogo);
+}
+
+.nav-link:focus{
+    font-weight: 600;
+    color: var(--pretoLogo);
+}
+
+.titulo{
+    color: var(--cinzaLogoPassaro);
 }
