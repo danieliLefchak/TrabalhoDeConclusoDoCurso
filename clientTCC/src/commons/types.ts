@@ -13,9 +13,8 @@ export interface Animais {
     porte: String;
     raca: String;
 	especie: String;
-	dataCadastro: Date;
     doencas: String;
-    imagens: string;//conferir isso aqui
+    imagens?: string;//conferir isso aqui
     entidade: Entidades;
 }
 

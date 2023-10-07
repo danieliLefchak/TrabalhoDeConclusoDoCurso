@@ -7,6 +7,7 @@ import { CadEntidadePage } from "../../pages/CadEntidadePage";
 import { LoginPage } from "../../pages/LoginPage";
 import { ListaAnimaisPage } from "../../pages/ListaAnimaisPage";
 import { CadLinksUteisPage } from "../../pages/CadLinksUteisPage";
+import { CadAnimaisPage } from "../../pages/CadAnimaisPage";
 
 export function AuthenticatedRoutes() {
     return (
@@ -17,6 +18,7 @@ export function AuthenticatedRoutes() {
                 <Route path="/CadAdotantePage" element={<CadAdotantesPage />} />
                 <Route path="/CadEntidadePage" element={<CadEntidadePage />} />
                 <Route path="/CadLinks" element={<CadLinksUteisPage />} />
+                <Route path="/CadAnimais" element={<CadAnimaisPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/animais" element={<ListaAnimaisPage />} />
             </Routes>
