@@ -10,7 +10,7 @@ export function NavBar(){
       key: '1',
       label: (
         <Link to="/" className="text-decoration-none">
-          Sair
+          Lista de interessados
         </Link>
       ),
     },
@@ -18,7 +18,7 @@ export function NavBar(){
       key: '2',
       label: (
         <Link to="/" className="text-decoration-none">
-          2nd menu item
+          Meus dados
         </Link>
       ),
     },
@@ -26,7 +26,7 @@ export function NavBar(){
       key: '3',
       label: (
         <Link to="/" className="text-decoration-none">
-          3rd menu item
+          Sair
         </Link>
       ),
     },

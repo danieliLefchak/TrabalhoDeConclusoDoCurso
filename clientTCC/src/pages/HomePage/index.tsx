@@ -7,6 +7,7 @@ import AnimaisService from "../../services/AnimaisService";
 import PrimeiroAnimal from "../../assets/PrimeiroAnimal.jpg";
 import CuidadosAnimais from "../../assets/CuidadosAnimaisCp.jpg";
 import AnimailMausTratos from "../../assets/AnimalMausTratos.jpg";
+import { Alert } from "antd";
 
 export function HomePage() {
     const [data, setData] = useState([]);
@@ -62,7 +63,7 @@ export function HomePage() {
                     </div>
                 ))}
             </div>
-            {apiError && (<div className="alert alert-danger">{apiError}</div>)}
+            {apiError && (<Alert message="Erro" description={apiError} type="error" showIcon/>)}
             <h1 className="text-center mb-2 titulo">Informações Uteis</h1>
             <div className="row row-cols-1 justify-content-center g-4 mt-1">
                 <Card
@@ -90,7 +91,7 @@ export function HomePage() {
                     style={{ width: 240 }}
                     cover={<img className="mt-2" alt="Cuidados" src={CuidadosAnimais}/>}
                 >
-                    <Meta title="Cuidados animais" description="Cuidados com animais de estimação." />
+                    <Meta title="Cuidados com animais" description="Cuidados com animais de estimação." />
                 </Card>
             </div>
         </div>
