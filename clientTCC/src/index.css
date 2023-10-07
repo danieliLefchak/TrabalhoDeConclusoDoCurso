@@ -44,8 +44,8 @@
     background-color: var(--verdeNav);
     color: var(--cinzaLogoPassaro);
     text-align: center;
-    padding: 1rem;
     margin-top: 2rem;
+    bottom: 0;
 }
 
 #cadText{
@@ -53,6 +53,15 @@
 }
 
 #cardCad{
+    width: 65rem;
+    padding-right: 2rem;
+    padding-left: 2rem;
+    background-color: var(--verdeLogo);
+}
+
+#cardCadLogin{
+    width: 36rem;
+    height: 30rem;
     background-color: var(--verdeLogo);
 }
 
@@ -96,4 +105,8 @@
 
 .titulo{
     color: var(--cinzaLogoPassaro);
+}
+
+.altura-rem {
+    height: 37.72rem;
 }

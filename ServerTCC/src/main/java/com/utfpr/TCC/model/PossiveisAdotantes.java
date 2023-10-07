@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -49,4 +51,8 @@ public class PossiveisAdotantes{
 	
 	//se funcionar o filtro colocar na tabela
 	private LocalDate dataInteresse;
+	
+	@JoinColumn(name = "user_id")
+	@ManyToOne
+	private Usuarios user;
 }

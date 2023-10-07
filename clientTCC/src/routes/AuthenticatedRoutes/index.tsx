@@ -4,6 +4,7 @@ import { HomePage } from "../../pages/HomePage";
 import { Footer } from "../../components/Footer";
 import { CadAdotantesPage } from "../../pages/CadAdotantePage";
 import { CadEntidadePage } from "../../pages/CadEntidadePage";
+import { LoginPage } from "../../pages/LoginPage";
 
 export function AuthenticatedRoutes() {
     return (
@@ -13,8 +14,9 @@ export function AuthenticatedRoutes() {
                 <Route path="/" element={<HomePage />} />
                 <Route path="/CadAdotantePage" element={<CadAdotantesPage />} />
                 <Route path="/CadEntidadePage" element={<CadEntidadePage />} />
+                <Route path="/login" element={<LoginPage />} />
             </Routes>
             <Footer />
         </div>
-    )
+    );
 }

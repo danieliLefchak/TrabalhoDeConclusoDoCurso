@@ -94,5 +94,5 @@ export function HomePage() {
                 </Card>
             </div>
         </div>
-    )
+    );
 }
