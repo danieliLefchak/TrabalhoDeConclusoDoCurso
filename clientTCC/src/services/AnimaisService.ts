@@ -1,4 +1,4 @@
-import { Animais } from "../commons/types";
+import { Animais } from "../commons/interfaces";
 import { api } from "../lib/axios";
 
 const save = (animais: Animais) => {

@@ -1,15 +1,36 @@
 import { Link, NavLink } from "react-router-dom";
 import logo from "../../assets/logo.png";
-import { Button, Dropdown, Space } from "antd";
+import { Dropdown, Space } from "antd";
 import type { MenuProps } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+import AuthService from "../../services/AuthService";
+import { useState, useEffect } from "react";
 
 export function NavBar(){
+  const [nome, setNome] = useState("");
+  const [encontrado, setEncontrado] = useState(false);
+
+  const onClickLogout = () => {
+    AuthService.logout();
+    window.location.reload();
+  };
+
+  useEffect(() => {
+    returnVal();
+  }, []);
+
+  const returnVal = () => {
+    const nomeStorage = localStorage.getItem("user");
+    if (nomeStorage && nomeStorage !== 'undefined') {
+        setEncontrado(true);
+        setNome(JSON.parse(nomeStorage).toString());
+    }
+  }
+
   const items: MenuProps['items'] = [
     {
       key: '1',
       label: (
-        <Link to="/" className="text-decoration-none">
+        <Link to="/listaInteressados" className="text-decoration-none">
           Lista de interessados
         </Link>
       ),
@@ -25,7 +46,7 @@ export function NavBar(){
     {
       key: '3',
       label: (
-        <Link to="/" className="text-decoration-none">
+        <Link to="/" className="text-decoration-none" onClick={onClickLogout}>
           Sair
         </Link>
       ),
@@ -41,7 +62,7 @@ export function NavBar(){
           <ul className="navbar-nav mx-auto mb-2 mb-md-0">
             <li className="nav-item">
               <NavLink
-                to="/"
+                to="/home"
                 className={(navData) =>
                   navData.isActive ? "nav-link active" : "nav-link"
                 }
@@ -51,7 +72,7 @@ export function NavBar(){
             </li>
             <li className="nav-item">
               <NavLink
-                to="/"
+                to="/animais"
                 className={(navData) =>
                   navData.isActive ? "nav-link active" : "nav-link"
                 }
@@ -61,7 +82,7 @@ export function NavBar(){
             </li>
             <li className="nav-item">
               <NavLink
-                to="/"
+                to="/CadAnimais"
                 className={(navData) =>
                   navData.isActive ? "nav-link active" : "nav-link"
                 }
@@ -72,7 +93,7 @@ export function NavBar(){
 
             <li className="nav-item">
               <NavLink
-                to="/"
+                to="/CadLinks"
                 className={(navData) =>
                   navData.isActive ? "nav-link active" : "nav-link"
                 }
@@ -81,13 +102,13 @@ export function NavBar(){
               </NavLink>
             </li>
           </ul>
-          <div className="d-flex align-items-center">
+          {encontrado ? <div className="d-flex align-items-center">
             <Space direction="vertical">
-              <Dropdown menu={{items}} placement="bottomRight">
-                <button id="btnNav" className="btn">Nome</button>
+              <Dropdown menu={{ items }} placement="bottomRight">
+                <button id="btnNav" className="btn">{nome}</button>
               </Dropdown>
             </Space>
-          </div>
+        </div> : <div></div>}
         </nav>
       </div>
   );

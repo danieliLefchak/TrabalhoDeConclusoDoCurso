@@ -1,9 +1,9 @@
-import { AuthenticatedRoutes } from './routes/AuthenticatedRoutes'
+import { BaseRoutes } from './routes/BaseRoutes'
 
 function App() {
   return (
     <>
-      <AuthenticatedRoutes />
+      <BaseRoutes />
     </>
   )
 }

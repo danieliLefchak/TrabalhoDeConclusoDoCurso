@@ -19,7 +19,7 @@ export interface Animais {
 }
 
 export interface Entidades {
-    id: number;
+    id?: number;
 	nomeFant: String;
 	cnpj: String;
 	endereco: String;
@@ -30,13 +30,13 @@ export interface Entidades {
 	telefone: String;
 	email: String;
 	mensagem: String;
-	inicio_atendimento: number;
-	fim_atendimento: number;
+	inicio_atendimento: string;
+	fim_atendimento: string;
 	user: UserLogin;
 }
 
 export interface PossiveisAdotantes {
-	id: number;
+	id?: number;
 	bairro: String;
 	cidade: String;
 	endereco: String;
@@ -53,10 +53,18 @@ export interface PossiveisAdotantes {
 }
 
 export interface LinksUteis {
-	id: number;
-	link: String;
+	id?: number;
+	link: string;
 	titulo: String;
 	descricao: String;
 	categoria: String;
 	entidade: Entidades;
+}
+
+export interface Interessados {
+	adotantes: PossiveisAdotantes;
+	animais: Animais;
+	visto: Boolean;
+	realizado: Boolean;
+	cancelado: Boolean;
 }

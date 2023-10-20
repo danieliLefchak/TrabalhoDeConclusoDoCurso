@@ -25,6 +25,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 	private AuthenticationManager authenticationManager;
 	private AuthService authService;
+	private String nome;
 	
 	public JWTAuthenticationFilter(AuthenticationManager authenticationManager, 
 									  AuthService authService) {
@@ -42,6 +43,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 					.readValue(request.getInputStream(), Usuarios.class);
 			
 			Usuarios usuario = (Usuarios)authService.loadUserByUsername(credentials.getUsername());
+			nome = usuario.getUsername();
 			
 			return authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(
@@ -72,6 +74,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 				.sign(Algorithm.HMAC512(SecurityConstants.SECRET));
 		
 		response.setContentType("application/json");
-		response.getWriter().write(new ObjectMapper().writeValueAsString(new AuthenticationResponse(token)));
+		response.getWriter().write(new ObjectMapper().writeValueAsString(new AuthenticationResponse(token, nome)));
 	}
 }

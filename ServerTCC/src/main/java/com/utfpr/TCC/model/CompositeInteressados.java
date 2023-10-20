@@ -7,10 +7,7 @@ import lombok.Data;
 
 @Data
 @Embeddable
-public class CompositeInteressados implements Serializable{
-	//A classe composite serve para fazer a foreign key composta 
-	//do banco de dados.
-    //Essa classe é criada para receber a anotação @Embeddable.
+public class CompositeInteressados implements Serializable{	
 	private long possiveisAdotantes;
 	
 	private long animais;

@@ -1,29 +1,38 @@
 package com.utfpr.TCC.controller;
 
-import java.util.List;
-
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.utfpr.TCC.dto.EntidadesDto;
 import com.utfpr.TCC.model.Entidades;
+import com.utfpr.TCC.model.Usuarios;
 import com.utfpr.TCC.service.CrudService;
 import com.utfpr.TCC.service.EntidadeService;
+import com.utfpr.TCC.service.UsuariosService;
+import com.utfpr.TCC.utils.GenericResponse;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("entidades")
 public class EntidadesController extends CrudController<Entidades, EntidadesDto, Long>{
 	private final EntidadeService entidadeService;
+	private final UsuariosService usuario;
 	private ModelMapper modelMapper;
 	
-	public EntidadesController(EntidadeService entidadeService, ModelMapper modelMapper) {
+	public EntidadesController(EntidadeService entidadeService, ModelMapper modelMapper, UsuariosService usuario) {
 		super(Entidades.class, EntidadesDto.class);
 		this.entidadeService = entidadeService;
 		this.modelMapper = modelMapper;
+		this.usuario = usuario;
 	}
 
 	@Override
@@ -45,5 +54,26 @@ public class EntidadesController extends CrudController<Entidades, EntidadesDto,
 		} else {
     		return ResponseEntity.noContent().build();
     	}
+	}
+	
+	@GetMapping("/findEntidadeByUser/{username}")
+	public ResponseEntity<EntidadesDto> findEntidadeByUser(@PathVariable String username){
+		Usuarios entity = usuario.findByusername(username);
+		
+		if(entity != null) {
+			return ResponseEntity.ok(super.convertToDto(entidadeService.findByUser(entity)));
+		} else {
+    		return ResponseEntity.noContent().build();
+    	}
+	}
+	
+	@Override
+	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
+	public GenericResponse create(@RequestBody @Valid Entidades entidade) {
+		Usuarios user = entidade.getUser();
+		usuario.save(user);
+		entidadeService.save(entidade);
+		return new GenericResponse("Registro salvo com sucesso");
 	}
 }

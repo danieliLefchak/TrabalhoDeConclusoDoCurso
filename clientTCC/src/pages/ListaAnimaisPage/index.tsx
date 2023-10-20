@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import AnimaisService from "../../services/AnimaisService";
 import { Alert, Card, Empty } from "antd";
 import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
-import { Animais } from "../../commons/types";
+import { Animais } from "../../commons/interfaces";
 import Meta from "antd/es/card/Meta";
 
 export function ListaAnimaisPage(){
@@ -25,11 +25,12 @@ export function ListaAnimaisPage(){
             })
             .catch((error) => {
                 setApiError('Falha ao carregar a animais');
+                console.log('Falha ao carregar a animais', error);
             });
     };
 
     return(
-        <div>
+        <div className="altura-rem">
             <h1 className="text-center titulo">Animais para adoção</h1>
             <div className="row row-cols-1 row-cols-md-4 g-4 mb-2 mt-2">
                 {data.map((animais: Animais) => (

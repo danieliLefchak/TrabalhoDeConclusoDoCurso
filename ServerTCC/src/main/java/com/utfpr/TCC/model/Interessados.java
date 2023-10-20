@@ -16,9 +16,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Interessados {
-	//em questões de ter um programa que seja eficiente levando em 
-	//consideração que podem sim haver varios adotantes que estejam
-	//interessados em varios animais
 	@EmbeddedId
 	private CompositeInteressados id;
 	
@@ -31,4 +28,10 @@ public class Interessados {
 	@MapsId("animais")
 	@ManyToOne
 	private Animais animais;
+	
+	private boolean visto;
+	
+	private boolean realizado;
+	
+	private boolean cancelado;
 }

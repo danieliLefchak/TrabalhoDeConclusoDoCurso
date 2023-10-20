@@ -8,6 +8,7 @@
     --cinzaLogo: #757575c5;
     --verdeLogo: #cce5667a;
     --pretoLogo: #000000;
+    --verdeCardLink: #cce5662b;
 }
 
 #cardFixBg{
@@ -44,7 +45,7 @@
     background-color: var(--verdeNav);
     color: var(--cinzaLogoPassaro);
     text-align: center;
-    margin-top: 2rem;
+    margin-top: 1.5rem;
     bottom: 0;
 }
 
@@ -108,5 +109,11 @@
 }
 
 .altura-rem {
-    height: 37.72rem;
+    height: 38.3rem;
+}
+
+.cardTam {
+    background-color: var(--verdeCardLink);
+    width: 32rem; 
+    height: 11rem; 
 }

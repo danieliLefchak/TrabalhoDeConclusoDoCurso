@@ -1,6 +1,75 @@
-import { Card, DatePicker, Form, Input, InputNumber, Select } from "antd";
+import { Alert, Card, DatePicker, Form, Input, Select } from "antd";
+import { ChangeEvent, useState } from 'react';
+import AuthService from "../../services/AuthService";
+import dayjs from 'dayjs';
+import { PossiveisAdotantes } from "../../commons/interfaces";
+import { useNavigate } from "react-router-dom";
 
 export function CadAdotantesPage() {
+    const [form, setForm] = useState({
+            bairro: '',
+            cidade: '',
+            endereco: '',
+            estado: '',
+            numero_casa: 0,
+            data_nascimento: dayjs(),
+            email: '',
+            nomeCompleto: '',
+            possui_animal: '',
+            profissao: '',
+            quantidade_animais: 0,
+            especie_animais: '',
+            user:{ username: '', password: '' },
+    });
+
+    const navigate = useNavigate();
+    const [apiError, setApiError] = useState("");
+
+    const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const { value, name } = event.target;
+        setForm((previousForm) => {
+            return {
+                ...previousForm,
+                [name]: value,
+            }
+        });
+    }
+
+    const onUserFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const { value, name } = event.target;
+        setForm((previousForm) => ({
+            ...previousForm,
+            user: {
+                ...previousForm.user,
+                [name]: value,
+            },
+        }));
+    }
+
+    const onClickCadastraAdotanteUsuario = () => {
+        const adotante: PossiveisAdotantes = {
+            ...form,
+            data_nascimento: form.data_nascimento.toDate(),
+            numero_casa: form.numero_casa!,
+            quantidade_animais: form.quantidade_animais!,
+            user:{
+                username: form.user.username,
+                password: form.user.password,
+            },
+        };
+
+        AuthService.cadastroAdotante(adotante)
+            .then((response) => {
+                setApiError("");
+                console.log("Usuário adotante criado com sucesso!  ", response);
+                navigate('/login');
+            })
+            .catch((error) => {
+                setApiError("Erro ao criar usuário adotante.");
+                console.error("Erro ao criar usuário adotante. ", error);
+            });
+    }
+
     return(
         <div className="container d-flex justify-content-center">
             <Card id="cardCad" className="mb-3 mt-5">
@@ -11,72 +80,88 @@ export function CadAdotantesPage() {
                     <div className="row justify-content-center">
                         <Form.Item className="col-md-5 col-sm-12">
                             <label id="cadText" className="form-label">Nome de usuário</label>
-                            <Input />
+                            <Input value={form.user.username} name="username" onChange={onUserFieldChange} />
                         </Form.Item>
                         <Form.Item className="col-md-5 col-sm-12">
                             <label id="cadText" className="form-label">Senha</label>
-                            <Input />
+                            <Input type="password" value={form.user.password} name="password" onChange={onUserFieldChange} />
                         </Form.Item>
                     </div>
 
                     <h6 id="cadText" className="text-center mb-4 fw-bolder">Informações para cadastro</h6>
                     <div className="row justify-content-start ms-5"> 
-                        <Form.Item className="col-md-4 col-sm-12">
-                            <label id="cadText" className="form-label">Nome completo</label>
-                            <Input />
-                        </Form.Item>
                         <Form.Item className="col-md-5 col-sm-12">
-                            <label id="cadText" className="form-label">E-mail</label>
-                            <Input />
+                            <label id="cadText" className="form-label">Nome completo</label>
+                            <Input value={form.nomeCompleto} name="nomeCompleto" onChange={onChange} />
                         </Form.Item>
-                        <Form.Item className="col-md-3 col-sm-12">
-                            <label id="cadText" className="form-label">Data de nascimento</label>
-                            <DatePicker />
+                        <Form.Item className="col-md-6 col-sm-12">
+                            <label id="cadText" className="form-label">E-mail</label>
+                            <Input value={form.email} name="email" onChange={onChange} />
+                        </Form.Item>
+                        <Form.Item className="col-md-4 col-sm-12">
+                            <label id="cadText" className="form-label me-2">Data de nascimento</label>
+                            <DatePicker value={form.data_nascimento} name="nascimento"
+                                        onChange={(date) => 
+                                                    {
+                                                        if (date) {
+                                                            setForm({ ...form, data_nascimento: date });
+                                                        }
+                                                    }
+                                                }
+                            />
                         </Form.Item>
                         <Form.Item className="col-md-4 col-sm-12">
                             <label id="cadText" className="form-label">Rua</label>
-                            <Input />
+                            <Input value={form.endereco} name="endereco" onChange={onChange} />
                         </Form.Item>
                         <Form.Item className="col-md-3 col-sm-12">
                             <label id="cadText" className="form-label">Bairro</label>
-                            <Input />
+                            <Input value={form.bairro} name="bairro" onChange={onChange} />
                         </Form.Item>
                         <Form.Item className="col-md-3 col-sm-12">
                             <label id="cadText" className="form-label">Cidade</label>
-                            <Input />
+                            <Input value={form.cidade} name="cidade" onChange={onChange} />
                         </Form.Item>
-                        <Form.Item className="col-md-1 col-sm-12">
+                        <Form.Item className="col-md-2 col-sm-12">
                             <label id="cadText" className="form-label">N°</label>
-                            <InputNumber />
+                            <Input value={form.numero_casa.toString()} name="numero_casa" onChange={onChange} />
                         </Form.Item>
                         <Form.Item className="col-md-2 col-sm-12">
                             <label id="cadText" className="form-label">Estado</label>
-                            <Input />
+                            <Input value={form.estado} name="estado" onChange={onChange} />
                         </Form.Item>
                         <Form.Item className="col-md-3 col-sm-12">
                             <label id="cadText" className="form-label">Profissão</label>
-                            <Input />
+                            <Input value={form.profissao} name="profissao" onChange={onChange} />
                         </Form.Item>
-                        <Form.Item className="col-md-2 col-sm-12">
+                        <Form.Item className="col-md-3 col-sm-12">
                             <label id="cadText" className="form-label">Tem animais</label>
-                            <Select>
+                            <Select value={form.possui_animal} onChange={(value) => {setForm({ ...form, possui_animal: value });}}>
+                                
                                 <Select.Option value="sim">Sim</Select.Option>
                                 <Select.Option value="nao">Não</Select.Option>
                             </Select>
                         </Form.Item>
-                        <Form.Item className="col-md-3 col-sm-12">
+                        <Form.Item className="col-md-4 col-sm-12">
                             <label id="cadText" className="form-label">Especie dos animais</label>
-                            <Input />
+                            <Input value={form.especie_animais} name="especie_animais" onChange={onChange} />
                         </Form.Item>
                         <Form.Item className="col-md-2 col-sm-12">
                             <label id="cadText" className="form-label">Quantos</label>
-                            <InputNumber />
+                            <Input value={form.quantidade_animais.toString()} name="quantidade_animais" onChange={onChange} />
                         </Form.Item> 
                     </div>
+                    {apiError && (<Alert message="Erro" description={apiError} type="error" showIcon/>)}
                                     
                     <div className="row justify-content-center mt-4">
                         <Form.Item  className="col-1">
-                            <button type="submit" className="btn btn-success">Salvar</button>
+                            <button type="submit" 
+                                    className="btn btn-success"
+                                    onClick={onClickCadastraAdotanteUsuario}>
+                                
+                                
+                                Salvar
+                            </button>
                         </Form.Item>
                     </div>
                     
