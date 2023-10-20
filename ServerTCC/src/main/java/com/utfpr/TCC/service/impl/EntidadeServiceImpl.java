@@ -34,6 +34,6 @@ public class EntidadeServiceImpl extends CrudServiceImpl<Entidades, Long> implem
 
 	@Override
 	public Entidades findByUser(Usuarios usuario) {
-		return entidadesRepository.findByUserUsername(usuario);
+		return entidadesRepository.findByUser(usuario);
 	}
 }

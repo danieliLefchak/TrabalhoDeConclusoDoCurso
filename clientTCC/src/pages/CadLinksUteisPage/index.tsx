@@ -35,7 +35,6 @@ export function CadLinksUteisPage() {
     }, []);
 
     const loadData = () => {
-        console.log("NOME; ", nome)
         EntidadeService.findByUser(nome)
             .then((response) => {
                 const entidadeData = response.data;
@@ -72,6 +71,7 @@ export function CadLinksUteisPage() {
                 } else {
                     navigate("/listaDenuncias");
                 }
+                console.log(links);
             })
             .catch((error) => {
                 toast.error('Erro ao criar link.');

@@ -1,6 +1,7 @@
 export interface UserLogin {
     username: string;
     password: string;
+	tipoUsuario: string;
 }
 
 export interface Animais {

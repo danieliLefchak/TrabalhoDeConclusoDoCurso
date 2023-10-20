@@ -19,7 +19,7 @@ export function CadAdotantesPage() {
             profissao: '',
             quantidade_animais: 0,
             especie_animais: '',
-            user:{ username: '', password: '' },
+            user:{ username: '', password: '', tipoUsuario: 'adotante' },
     });
 
     const navigate = useNavigate();
@@ -55,6 +55,7 @@ export function CadAdotantesPage() {
             user:{
                 username: form.user.username,
                 password: form.user.password,
+                tipoUsuario: "adotante",
             },
         };
 

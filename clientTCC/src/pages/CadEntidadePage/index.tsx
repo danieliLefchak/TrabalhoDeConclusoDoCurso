@@ -19,7 +19,7 @@ export function CadEntidadePage() {
         mensagem: '',
         inicio_atendimento: dayjs(),
         fim_atendimento: dayjs(),
-        user:{ username: '', password: '' },
+        user:{ username: '', password: '', tipoUsuario: 'entidade' },
     });
 
     const navigate = useNavigate();
@@ -55,6 +55,7 @@ export function CadEntidadePage() {
             user:{
                 username: form.user.username,
                 password: form.user.password,
+                tipoUsuario: "entidade",
             },
         };
 
