@@ -31,4 +31,8 @@ public class AnimaisDto {
 	private String doencas;
 	
 	private Entidades entidade;
+	
+	private  String imagemNome;
+	
+	private  String conteudoImagem;
 }

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import AnimaisService from "../../services/AnimaisService";
 import { Alert, Card, Empty } from "antd";
 import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
+import semImagem from "../../assets/semImagem.png";
 import { Animais } from "../../commons/interfaces";
 import Meta from "antd/es/card/Meta";
 
@@ -38,9 +39,9 @@ export function ListaAnimaisPage(){
                         <Card
                             style={{ width: 300 }}
                             cover={
-                            <img
+                                <img
                                 alt="animais"
-                                src={animais.imagens/*<img alt="animais" src={animais.imagens}/>*/}
+                                src={animais.imagens.length > 0 ? animais.imagens[0].conteudoImagem : semImagem}
                             />
                             }
                             actions={[

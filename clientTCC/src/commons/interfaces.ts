@@ -4,19 +4,11 @@ export interface UserLogin {
 	tipoUsuario: string;
 }
 
-export interface Animais {
-    id: number;
-	genero: String;
-	idade: number;
-	medicacoes: String;
-	nome: String;
-	personalidade: String;
-    porte: String;
-    raca: String;
-	especie: String;
-    doencas: String;
-    imagens?: string;//conferir isso aqui
-    entidade: Entidades;
+export interface Imagem {
+	id?: number;
+	imagemNome: string;
+	conteudoImagem: string;
+	tipo: string;
 }
 
 export interface Entidades {
@@ -34,6 +26,21 @@ export interface Entidades {
 	inicio_atendimento: string;
 	fim_atendimento: string;
 	user: UserLogin;
+}
+
+export interface Animais {
+    id?: number;
+	genero: String;
+	idade: number;
+	medicacoes: String;
+	nome: String;
+	personalidade: String;
+    porte: String;
+    raca: String;
+	especie: String;
+    doencas: String;
+    imagens: Imagem[];
+    entidade: Entidades;
 }
 
 export interface PossiveisAdotantes {

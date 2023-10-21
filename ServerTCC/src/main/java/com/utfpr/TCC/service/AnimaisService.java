@@ -2,7 +2,12 @@ package com.utfpr.TCC.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.utfpr.TCC.model.Animais;
+import com.utfpr.TCC.model.Imagem;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 public interface AnimaisService extends CrudService<Animais, Long> {
 	List<Animais> findByNome(String nome);
@@ -34,4 +39,10 @@ public interface AnimaisService extends CrudService<Animais, Long> {
 	List<Animais> findByNomeAndEspecieAndRaca(String nome, String especie, String raca);
 	
 	List<Animais> findByPorteAndEspecieAndRacaAndNome(String porte, String especie, String raca, String nome);
+	
+	Animais saveWithFile(Animais animal, List<MultipartFile> files);
+	
+	void downloadFile(Long id, HttpServletResponse response);
+	
+	List<Imagem> findImagensById(Long id);
 }

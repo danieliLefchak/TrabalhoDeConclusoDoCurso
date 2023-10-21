@@ -2,11 +2,12 @@ import Card from "antd/es/card/Card";
 import Meta from "antd/es/card/Meta";
 import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
 import { useEffect, useState } from "react";
-import { Animais } from "../../commons/interfaces";
+import { Animais, Imagem } from "../../commons/interfaces";
 import AnimaisService from "../../services/AnimaisService";
 import PrimeiroAnimal from "../../assets/PrimeiroAnimal.jpg";
 import CuidadosAnimais from "../../assets/CuidadosAnimaisCp.jpg";
 import AnimailMausTratos from "../../assets/AnimalMausTratos.jpg";
+import semImagem from "../../assets/semImagem.png";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -64,13 +65,13 @@ export function HomePage() {
                             cover={
                             <img
                                 alt="animais"
-                                src={animais.imagens/*<img alt="animais" src={animais.imagens}/>*/}
+                                src={animais.imagens.length > 0 ? animais.imagens[0].conteudoImagem : semImagem}
                             />
                             }
                             actions={[
-                            <SettingOutlined key="setting" />,
-                            <EditOutlined key="edit" />,
-                            <EllipsisOutlined key="ellipsis" />,
+                                <SettingOutlined key="setting" />,
+                                <EditOutlined key="edit" />,
+                                <EllipsisOutlined key="ellipsis" />,
                             ]}
                         >
                             <Meta title={animais.nome} description={animais.especie} />

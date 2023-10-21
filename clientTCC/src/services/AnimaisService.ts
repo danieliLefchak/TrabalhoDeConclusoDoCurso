@@ -1,17 +1,16 @@
-import { Animais } from "../commons/interfaces";
 import { api } from "../lib/axios";
 
-const save = (animais: Animais) => {
-    return api.post('/animais', animais);
+const save = (formData: FormData) => {
+  return api.post("/animais/upload", formData);
 }
 
 const findAll = () => {
-    return api.get('/animais');
+  return api.get('/animais');
 }
 
 const AnimaisService = {
-    save,
-    findAll
+  save,
+  findAll
 }
 
 export default AnimaisService;

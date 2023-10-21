@@ -15,6 +15,7 @@ export function CadLinksUteisPage() {
         categoria: '',
         entidade: {} as Entidades,
     });
+    
     const navigate = useNavigate();
     var nomeStorage: any = localStorage.getItem("user");
     var nome = JSON.parse(nomeStorage).toString();
@@ -48,6 +49,9 @@ export function CadLinksUteisPage() {
                 }
             })
             .catch((error) => {
+                if(entidades===null){
+                    console.log('O valor da entidade é nulo.');
+                }
                 console.log('Falha ao carregar a entidade. ', error);
                 toast.error('Falha ao carregar a entidade.');
             });
@@ -58,8 +62,6 @@ export function CadLinksUteisPage() {
             ...form,
             entidade: {...form.entidade},
         };
-
-        console.log("ENTIDADES: ", entidades);
 
         LinksUteisService.save(links)
             .then((response) => {
