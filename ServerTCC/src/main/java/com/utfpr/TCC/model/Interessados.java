@@ -1,5 +1,8 @@
 package com.utfpr.TCC.model;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
@@ -34,4 +37,8 @@ public class Interessados {
 	private boolean realizado;
 	
 	private boolean cancelado;
+	
+	private LocalTime horario_visita;
+	
+	private LocalDate dataVisita;
 }

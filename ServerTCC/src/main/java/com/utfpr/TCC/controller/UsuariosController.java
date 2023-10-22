@@ -31,7 +31,7 @@ public class UsuariosController extends CrudController<Usuarios, Usuarios, Long>
 //		return new GenericResponse("Registro salvo");
 //	}
 	
-	@GetMapping("{nome}")
+	@GetMapping("findByName/{nome}")
 	public ResponseEntity<Usuarios> findEntidadeByName(@PathVariable String nome){
 		Usuarios entity = usuariosService.findByusername(nome);
 		

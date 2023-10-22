@@ -10,9 +10,14 @@ const findAllByCategoria = (categoria: String) => {
     return api.get(`/linksUteis/findLinkUtil/${categoria}`);
 }
 
+const findById = (id: number) => {
+    return api.get(`/linksUteis/${id}`);
+}
+
 const LinksUteisService = {
     save,
     findAllByCategoria,
+    findById,
 }
 
 export default LinksUteisService;

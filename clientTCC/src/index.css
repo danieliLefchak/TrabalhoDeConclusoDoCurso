@@ -117,3 +117,11 @@
     width: 32rem; 
     height: 11rem; 
 }
+
+.textLinkBanner{
+    color: var(--verdeNav);
+}
+
+.textLinkBanner:hover{
+    color: var(--verdeLogoCoelho);
+}

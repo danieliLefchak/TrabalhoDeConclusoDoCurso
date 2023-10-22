@@ -8,7 +8,7 @@ import PrimeiroAnimal from "../../assets/PrimeiroAnimal.jpg";
 import CuidadosAnimais from "../../assets/CuidadosAnimaisCp.jpg";
 import AnimailMausTratos from "../../assets/AnimalMausTratos.jpg";
 import semImagem from "../../assets/semImagem.png";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -27,7 +27,7 @@ export function HomePage() {
                 setData(response.data);
             })
             .catch((error) => {
-                toast('Falha ao carregar a animais.');
+                toast.error('Falha ao carregar a animais.');
                 console.log('Falha ao carregar a animais. ', error)
             });
 
@@ -53,6 +53,9 @@ export function HomePage() {
                     <div className="banner-buttons">
                         <a className="btn btnBanner" href="/CadEntidadePage">Login entidade</a>
                         <a className="btn btnBanner ms-4" href="/CadAdotantePage">Login adotante</a>
+                        <p className="mt-4">Já possui cadastro? Então faça <Link to="/login" className="text-decoration-none textLinkBanner fw-bold">
+                          Login
+                        </Link></p>
                     </div>
                 : <div></div>}
             </section>

@@ -71,6 +71,7 @@ public class WebSecurity {
 				.requestMatchers(antMatcher(HttpMethod.GET, "/linksUteis/**")).permitAll()
 				
 				.requestMatchers(antMatcher("/entidades/findEntidadeByUser/**")).hasAnyRole("ADMIN")
+				.requestMatchers(antMatcher(HttpMethod.GET, "/usuarios/findByName/**")).hasAnyRole("ADMIN", "USER")
 				
 				.anyRequest().authenticated()
 		);

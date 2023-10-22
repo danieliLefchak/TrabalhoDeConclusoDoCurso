@@ -69,7 +69,7 @@ export function CadLinksUteisPage() {
                 if(links.categoria === "Primeiro animal"){
                     navigate("/listaPrimeiroAnimal");
                 } else if(links.categoria === "Cuidados com animais"){
-                    navigate("/listaInteressados");
+                    navigate("/listaCuidados");
                 } else {
                     navigate("/listaDenuncias");
                 }

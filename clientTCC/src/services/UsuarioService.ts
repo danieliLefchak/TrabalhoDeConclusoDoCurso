@@ -9,7 +9,8 @@ const findAll = () => {
 }
 
 const findByName = (nome: string) => {
-    return api.get(`/usuarios/${nome}`);
+    console.log(api.defaults.headers.common);
+    return api.get(`/usuarios/findByName/${nome}`);
 }
 
 const UsuarioService = {

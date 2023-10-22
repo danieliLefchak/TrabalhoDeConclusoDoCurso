@@ -75,8 +75,7 @@ export function CadAnimaisPage() {
           reader.readAsDataURL(file.originFileObj!);
   
           return new Promise<Imagem>(async (resolve) => {
-            reader.onload = async (e) => {
-  
+            reader.onload = async () => {
               const options = {
                 maxSizeMB: 0.5, 
                 maxWidthOrHeight: 800, 
@@ -146,6 +145,7 @@ export function CadAnimaisPage() {
 
   return (
     <div className="container d-flex justify-content-center">
+      <ToastContainer />
       <Card id="cardCad" className="mb-3 mt-5">
         <h2 id="cadText" className="text-center mb-5 mt-2">
           Cadastro de Animais

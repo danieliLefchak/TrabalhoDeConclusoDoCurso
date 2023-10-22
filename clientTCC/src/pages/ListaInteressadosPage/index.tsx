@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { Interessados } from "../../commons/interfaces";
 import { Card } from "antd";
 import InteressadosService from "../../services/InteressadosService";
+import { ToastContainer, toast } from 'react-toastify';
 //import { CheckCircleOutlined, CloseCircleOutlined, EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 
 export function ListaInteressadosPage(){
     const [data, setData] = useState([]);
-    const [apiError, setApiError] = useState('');
     const [visto, setVisto] = useState(false);
     const [realizado, setRealizado] = useState(false);
     const [cancelado, setCancelado] = useState(false);
@@ -22,10 +22,9 @@ export function ListaInteressadosPage(){
                 setVisto(response.data.visto);
                 setRealizado(response.data.realizado);
                 setCancelado(response.data.cancelado);
-                setApiError('');
             })
             .catch((error) => {
-                setApiError('Falha ao carregar os interessados ');
+                toast('Falha ao carregar os interessados ');
                 console.log('Falha ao carregar os interessados ', error);
             });
     };
@@ -53,8 +52,9 @@ export function ListaInteressadosPage(){
 
     return(
         <div className="container altura-rem">
+            <ToastContainer />
             <h1 className="text-center titulo">Lista de interessados</h1>
-            <div className="row row-cols-1 row-cols-md-4 g-4 mb-2 mt-2">
+            <div className="row row-cols-1 row-cols-md-2 row-cols-lg-2 g-4 mb-2 mt-2 d-flex justify-content-center align-items-center">
                 {data.map((interessado: Interessados) => (
                     <div className="col-sm-5 col-md-4 col-lg-2 me-2 ms-2">
                         <Card title={interessado.animais.nome}>

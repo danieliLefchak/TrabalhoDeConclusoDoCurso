@@ -4,10 +4,14 @@ import { Dropdown, Space } from "antd";
 import type { MenuProps } from 'antd';
 import AuthService from "../../services/AuthService";
 import { useState, useEffect } from "react";
+import UsuarioService from "../../services/UsuarioService";
+import { UserLogin } from "../../commons/interfaces";
 
 export function NavBar(){
   const [nome, setNome] = useState("");
   const [encontrado, setEncontrado] = useState(false);
+  const [roleAdmin, setRoleAdmin] = useState(false);
+  const [roleUser, setRoleUser] = useState(false);
 
   const onClickLogout = () => {
     AuthService.logout();
@@ -23,15 +27,45 @@ export function NavBar(){
     if (nomeStorage && nomeStorage !== 'undefined') {
         setEncontrado(true);
         setNome(JSON.parse(nomeStorage).toString());
+
+        UsuarioService.findByName(JSON.parse(nomeStorage).toString())
+          .then((response) => {
+            const userResponse = response.data;
+
+            const userLogin: UserLogin = {
+              id: userResponse.id,
+              username: userResponse.username,
+              password: userResponse.password,
+              tipoUsuario: userResponse.tipoUsuario,
+            };
+
+            if(userLogin.tipoUsuario === "adotante"){
+              setRoleAdmin(false);
+              setRoleUser(true);
+            } else if(userLogin.tipoUsuario === "entidade"){
+              setRoleAdmin(true);
+              setRoleUser(false);
+            }
+          })
+          .catch((error) => {
+            console.error("Erro ao buscar usuário: ", error);
+          });
     }
   }
 
   const items: MenuProps['items'] = [
-    {
+    roleAdmin ? {
       key: '1',
       label: (
         <Link to="/listaInteressados" className="text-decoration-none">
           Lista de interessados
+        </Link>
+      ),
+    } : {
+      key: '1',
+      label: (
+        <Link to="/CadEntidadePage" className="text-decoration-none">
+          Cadastro como entidade
         </Link>
       ),
     },
@@ -80,7 +114,7 @@ export function NavBar(){
                 Animais
               </NavLink>
             </li>
-            <li className="nav-item">
+            {roleAdmin ? <li className="nav-item">
               <NavLink
                 to="/CadAnimais"
                 className={(navData) =>
@@ -89,9 +123,8 @@ export function NavBar(){
               >
                 Cadastro de animais
               </NavLink>
-            </li>
-
-            <li className="nav-item">
+            </li> : <li></li>}
+            {roleAdmin ? <li className="nav-item">
               <NavLink
                 to="/CadLinks"
                 className={(navData) =>
@@ -100,7 +133,7 @@ export function NavBar(){
               >
                 Cadastro de links
               </NavLink>
-            </li>
+            </li> : <li></li>}
           </ul>
           {encontrado ? <div className="d-flex align-items-center">
             <Space direction="vertical">

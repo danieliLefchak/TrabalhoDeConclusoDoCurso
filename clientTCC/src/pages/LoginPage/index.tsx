@@ -37,8 +37,6 @@ export function LoginPage(){
             localStorage.setItem("user", JSON.stringify(response.data.user));
             navigate('/home');
             window.location.reload();
-            console.log(response);
-            
           })
           .catch((errorResponse) => {
             toast("Erro ao realizar login.");

@@ -1,7 +1,8 @@
 export interface UserLogin {
+	id?: number;
     username: string;
     password: string;
-	tipoUsuario: string;
+	tipoUsuario?: string;
 }
 
 export interface Imagem {

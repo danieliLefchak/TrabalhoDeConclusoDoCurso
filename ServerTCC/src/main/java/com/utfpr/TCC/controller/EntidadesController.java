@@ -59,7 +59,6 @@ public class EntidadesController extends CrudController<Entidades, EntidadesDto,
 	@GetMapping("/findEntidadeByUser/{username}")
 	public ResponseEntity<EntidadesDto> findEntidadeByUser(@PathVariable String username){
 		Usuarios entity = usuario.findByusername(username);
-		System.out.println("\n\n\n" + entity + "\n\n\n");
 		
 		if(entity != null) {
 			return ResponseEntity.ok(super.convertToDto(entidadeService.findByUser(entity)));

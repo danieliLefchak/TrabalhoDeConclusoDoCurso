@@ -10,6 +10,7 @@ import { ListaLinksDenunciaPage } from "../../pages/ListaLinksDenunciaPage";
 import { ListaPrimeiroAnimalPage } from "../../pages/ListaPrimeiroAnimalPage";
 import { ListaInteressadosPage } from "../../pages/ListaInteressadosPage";
 import { HomePage } from "../../pages/HomePage";
+import { EditaLinkPage } from "../../pages/EditaLinkPage";
 
 export function AuthenticatedRoutes() {
     return (
@@ -26,6 +27,7 @@ export function AuthenticatedRoutes() {
                 <Route path="/listaDenuncias" element={<ListaLinksDenunciaPage />} />
                 <Route path="/listaPrimeiroAnimal" element={<ListaPrimeiroAnimalPage />} />
                 <Route path="/listaInteressados" element={<ListaInteressadosPage />} />
+                <Route path="/editaLink/:id" element={<EditaLinkPage />} />
             </Routes>
             <Footer />
         </div>

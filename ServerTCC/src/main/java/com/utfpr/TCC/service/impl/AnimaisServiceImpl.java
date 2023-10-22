@@ -2,6 +2,7 @@ package com.utfpr.TCC.service.impl;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -136,6 +137,8 @@ public class AnimaisServiceImpl extends CrudServiceImpl<Animais, Long> implement
 		}
 		imagemRepository.saveAll(imagens);
 		
+		LocalDate dataCad = LocalDate.now();
+		animal.setDataCadastro(dataCad);
 		animal.setImagens(imagens);
 		
 		return animaisRepository.save(animal);

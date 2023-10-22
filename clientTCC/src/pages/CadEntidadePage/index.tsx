@@ -1,9 +1,10 @@
-import { Alert, Card, Form, Input, TimePicker } from "antd";
+import { Card, Form, Input, TimePicker } from "antd";
 import dayjs from 'dayjs';
 import { ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthService from "../../services/AuthService";
 import { Entidades } from "../../commons/interfaces";
+import { ToastContainer, toast } from "react-toastify";
 
 export function CadEntidadePage() {
     const [form, setForm] = useState({
@@ -23,7 +24,6 @@ export function CadEntidadePage() {
     });
 
     const navigate = useNavigate();
-    const [apiError, setApiError] = useState("");
 
     const onChange = (event: ChangeEvent<HTMLInputElement>) => {
         const { value, name } = event.target;
@@ -61,18 +61,18 @@ export function CadEntidadePage() {
 
         AuthService.cadastroEntidade(entidade)
             .then((response) => {
-                setApiError("");
                 console.log("Usuário entidade criado com sucesso!  ", response);
                 navigate('/login');
             })
             .catch((error) => {
-                setApiError("Erro ao criar usuário entidade.");
+                toast("Erro ao criar usuário entidade.");
                 console.error("Erro ao criar usuário entidade. ", error);
             });
     }
 
     return(
         <div className="container d-flex justify-content-center">
+            <ToastContainer />
             <Card id="cardCad" className="mb-3 mt-5">
                 <h2 id="cadText" className="text-center mb-5 mt-2">Cadastro de Entidades</h2>
                 <Form layout="horizontal">
@@ -140,7 +140,6 @@ export function CadEntidadePage() {
                             <TimePicker value={dayjs(form.fim_atendimento, 'HH:mm:ss')} format="HH:mm" name="fim_atendimento" />
                         </Form.Item> 
                     </div>
-                    {apiError && (<Alert message="Erro" description={apiError} type="error" showIcon/>)}
                                     
                     <div className="row justify-content-center mt-4">
                         <Form.Item  className="col-1">
