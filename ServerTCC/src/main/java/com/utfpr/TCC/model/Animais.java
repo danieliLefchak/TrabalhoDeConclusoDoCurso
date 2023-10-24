@@ -53,9 +53,9 @@ public class Animais {
 	
 	private String doencas;
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "animal_id")
-    private List<Imagem> imagens;
+	private List<String> imagemNome;
+	
+	private List<String> conteudoImagem;
 	
 	@NotNull
 	@JoinColumn(name = "entidade_id")

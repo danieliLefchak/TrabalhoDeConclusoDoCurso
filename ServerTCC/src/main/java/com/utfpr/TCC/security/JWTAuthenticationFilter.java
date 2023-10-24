@@ -2,6 +2,7 @@ package com.utfpr.TCC.security;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.Set;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,6 +15,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.utfpr.TCC.model.Authority;
 import com.utfpr.TCC.model.Usuarios;
 import com.utfpr.TCC.service.AuthService;
 
@@ -26,6 +28,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	private AuthenticationManager authenticationManager;
 	private AuthService authService;
 	private String nome;
+	private Set<Authority> authorities;
 	
 	public JWTAuthenticationFilter(AuthenticationManager authenticationManager, 
 									  AuthService authService) {
@@ -44,6 +47,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 			
 			Usuarios usuario = (Usuarios)authService.loadUserByUsername(credentials.getUsername());
 			nome = usuario.getUsername();
+			authorities = usuario.getUserAuthorities();
 			
 			return authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(
@@ -74,6 +78,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 				.sign(Algorithm.HMAC512(SecurityConstants.SECRET));
 		
 		response.setContentType("application/json");
-		response.getWriter().write(new ObjectMapper().writeValueAsString(new AuthenticationResponse(token, nome)));
+		response.getWriter().write(new ObjectMapper().writeValueAsString(new AuthenticationResponse(token, nome, authorities)));
 	}
 }

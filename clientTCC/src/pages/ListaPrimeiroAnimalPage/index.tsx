@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { LinksUteis, UserLogin } from "../../commons/interfaces";
+import { Entidades, LinksUteis, UserLogin } from "../../commons/interfaces";
 import LinksUteisService from "../../services/LinksUteisService";
 import { Button, Card } from "antd";
 import { ToastContainer, toast } from 'react-toastify';
@@ -11,10 +11,16 @@ import EntidadeService from "../../services/EntidadeService";
 export function ListaPrimeiroAnimalPage(){
     const [data, setData] = useState([]);
     const [isAdmin, setIsAdmin] = useState(false);
-    const [isEntidade, setIsEntidade] = useState(false);
     const navigate = useNavigate();
-    const [entidadeEncont, setEntidadeEncont] = useState([]);
     const nomeStorage: any = localStorage.getItem("user");
+    const [linkEncontrado, setLinkEncontrado] = useState({
+        id: undefined,
+        link: '',
+        titulo: '',
+        descricao: '',
+        categoria: '',
+        entidade: {} as Entidades,
+    });
 
     useEffect(() => {
         loadData();
@@ -49,6 +55,8 @@ export function ListaPrimeiroAnimalPage(){
                 } else if(userLogin.tipoUsuario === "entidade"){
                     setIsAdmin(true);
                 }
+                
+                console.log("NOME ", userLogin.username);
                 })
                 .catch((error) => {
                     console.error("Erro ao buscar usuário: ", error);
@@ -61,14 +69,14 @@ export function ListaPrimeiroAnimalPage(){
             .then((response) =>{
                 const linkData = response.data;
 
-                const linkEncontrado : LinksUteis = {
+                setLinkEncontrado({
                     id: linkData.id,
                     link: linkData.link,
                     titulo: linkData.titulo,
                     descricao: linkData.descricao,
                     categoria: linkData.categoria,
                     entidade: linkData.entidade,
-                };
+                });
 
                 EntidadeService.findByUser(JSON.parse(nomeStorage).toString())
                 .then((response) => {
@@ -76,12 +84,15 @@ export function ListaPrimeiroAnimalPage(){
 
                     if (entidadeData.id === linkEncontrado.entidade.id) {
                         navigate(`/editaLink/${linkEncontrado.id}`);
+                    } else {
+                        toast.warning('Somente a entidade que cadastrou esse link pode edita-lo.');
                     }
                 })
                 .catch((error) => {
                     console.log('Falha ao carregar a entidade. ', error);
                     toast.error('Falha ao carregar a entidade.');
                 });
+
             })
             .catch((error) => {
                 console.log('Falha ao carregar o link. ', error);
@@ -89,8 +100,15 @@ export function ListaPrimeiroAnimalPage(){
             });
     };
     
-      const handleDelete = (linkId: number) => {
-        // Lógica para excluir o link com o ID linkId
+    const handleDelete = (linkId: number) => {
+        LinksUteisService.deleteById(linkId)
+            .then(() => {
+                toast.success('Link excluido com sucesso.');
+                window.location.reload();
+            })
+            .catch(() => {
+                toast.error('Falha ao excluir link.');
+            });       
     };
 
     return(
@@ -100,13 +118,12 @@ export function ListaPrimeiroAnimalPage(){
             <div className="row row-cols-1 row-cols-md-2 row-cols-lg-2 g-4 mb-2 mt-2 d-flex justify-content-center align-items-center">
                 {data.map((links: LinksUteis) => (
                     <div className="col col-md-12 col-lg-5">
-                        <a href={links.link} target="_blank" rel="noopener noreferrer" className="text-decoration-none">
-                            <Card
-                                className="cardTam"
-                                style={{ marginTop: 10 }}
-                                type="inner"
-                                title={links.titulo}
-                                extra={isAdmin && (
+                        <Card
+                            className="cardTam"
+                            style={{ marginTop: 10 }}
+                            type="inner"
+                            title={links.titulo}
+                            extra={isAdmin && (
                                     <div>
                                       <Button
                                         type="text"
@@ -121,9 +138,8 @@ export function ListaPrimeiroAnimalPage(){
                                     </div>
                                   )}
                             >
-                                {links.descricao}
-                            </Card>
-                        </a>
+                                <a href={links.link} target="_blank" rel="noopener noreferrer" className="text-decoration-none">{links.descricao}</a>
+                        </Card>
                     </div>
                 ))}
             </div>

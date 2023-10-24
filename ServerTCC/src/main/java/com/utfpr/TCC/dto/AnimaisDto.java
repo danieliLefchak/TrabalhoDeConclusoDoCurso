@@ -1,6 +1,7 @@
 package com.utfpr.TCC.dto;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import com.utfpr.TCC.model.Entidades;
 
@@ -32,7 +33,7 @@ public class AnimaisDto {
 	
 	private Entidades entidade;
 	
-	private  String imagemNome;
+	private List<String> imagemNome;
 	
-	private  String conteudoImagem;
+	private List<String> conteudoImagem;
 }

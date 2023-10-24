@@ -40,7 +40,8 @@ export interface Animais {
     raca: String;
 	especie: String;
     doencas: String;
-    imagens: Imagem[];
+    imagemNome?: string[];
+	conteudoImagem?: string[];
     entidade: Entidades;
 }
 

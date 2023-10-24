@@ -51,13 +51,12 @@ public class AnimaisController extends CrudController<Animais, AnimaisDto, Long>
 	}
 	
 	@PostMapping(value = "upload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_OCTET_STREAM_VALUE})
-	public GenericResponse createAnimal(@RequestPart("animais") @Valid Animais entity, @RequestPart("imagens") @Valid List<MultipartFile> files) {
-	    animaisService.saveWithFile(entity, files);
-	    return new GenericResponse("Registro salvo com sucesso");
+	public Animais saveProduct(@RequestPart("animais") @Valid  Animais entity, @RequestPart("imagens") @Valid  List<MultipartFile> file) {
+		return animaisService.saveWithFile(entity, file);
 	}
 	
 	@GetMapping(value = "download/{id}")
-	public  void downloadFile(@PathVariable("id") Long id, HttpServletResponse response) {
+	public void downloadFile(@PathVariable("id") Long id, HttpServletResponse response) {
 		animaisService.downloadFile(id, response);
 	}
 }

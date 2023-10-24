@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.utfpr.TCC.model.Animais;
-import com.utfpr.TCC.model.Imagem;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -43,6 +42,4 @@ public interface AnimaisService extends CrudService<Animais, Long> {
 	Animais saveWithFile(Animais animal, List<MultipartFile> files);
 	
 	void downloadFile(Long id, HttpServletResponse response);
-	
-	List<Imagem> findImagensById(Long id);
 }

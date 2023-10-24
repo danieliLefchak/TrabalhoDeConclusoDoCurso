@@ -5,8 +5,8 @@ insert into tb_authority (authority) values ('ROLE_USER');
 insert into usuarios (password, tipo_usuario, username) values ('$2a$10$m48.B018TZN6k7co3djyj.HEae63nYOoPEOLd22awQ7BzaEKIRlK6', 'adotante', 'Danieli');
 insert into usuarios (password, tipo_usuario, username) values ('$2a$10$m48.B018TZN6k7co3djyj.HEae63nYOoPEOLd22awQ7BzaEKIRlK6', 'entidade', 'Dani');
 
-insert into tb_user_authorities (user_id, authority_id) values (1, 1);
-insert into tb_user_authorities (user_id, authority_id) values (2, 2);
+insert into tb_user_authorities (user_id, authority_id) values (1, 2);
+insert into tb_user_authorities (user_id, authority_id) values (2, 1);
 
 insert into possiveis_adotantes (bairro, cidade, data_nascimento, email, endereco, especie_animais, estado, nome_completo, numero_casa, possui_animal, profissao, quantidade_animais, user_id) values ('são francisco', 'pato branco', '2001-05-22', 'danieli.marialefchak@gmail.com', 'tv são francisco', 'cachorro', 'pr', 'Danieli Maria Lefchak', 25, 'Sim', 'Estagiaria', 3, 1);
 

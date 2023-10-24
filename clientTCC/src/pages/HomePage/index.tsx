@@ -68,7 +68,7 @@ export function HomePage() {
                             cover={
                             <img
                                 alt="animais"
-                                src={animais.imagens.length > 0 ? animais.imagens[0].conteudoImagem : semImagem}
+                                src={animais.conteudoImagem.length > 0 ? animais.conteudoImagem[0].conteudoImagem : semImagem}
                             />
                             }
                             actions={[

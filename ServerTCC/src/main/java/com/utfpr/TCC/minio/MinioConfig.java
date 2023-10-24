@@ -1,4 +1,4 @@
-package com.utfpr.TCC.config;
+package com.utfpr.TCC.minio;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -10,25 +10,25 @@ import lombok.Data;
 @Data
 @Configuration
 @ConfigurationProperties(prefix = "minio")
-public class MinioConfig {
-	private String endpoint;
+public  class MinioConfig {
 	
-	private Integer port;
+	private  String endpoint;
 	
-	private String accessKey;
+	private  Integer port;
 	
-	private String secretKey;
+	private  String accessKey;
 	
-	private boolean secure;
+	private  String secretKey;
 	
-	private String bucketName;
+	private  boolean secure;
+
+	private  String bucketName;
 	
-	private long imageSize;
-	
-	private long fileSize;
-	
+	private  long imageSize;
+
+	private  long fileSize;
 	@Bean
-	public MinioClient minioClient() {
+	public  MinioClient minioClient() {
 		MinioClient minioClient =
 		MinioClient.builder()
 			.credentials(accessKey, secretKey)

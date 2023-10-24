@@ -1,25 +1,36 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { ChangeEvent, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import LinksUteisService from "../../services/LinksUteisService";
 import { ToastContainer, toast } from 'react-toastify';
+import { Entidades, LinksUteis } from "../../commons/interfaces";
+import { Form, Input, Select } from "antd";
 
 export function EditaLinkPage() {
-  const { id } = useParams(); // Obtém o ID do link dos parâmetros da URL
-  const [link, setLink] = useState({
-    id: 0,
-    link: "",
-    titulo: "",
-    descricao: "",
-    categoria: "",
-    entidade: "",
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [link, setLink] = useState<LinksUteis>({
+    id: undefined,
+    link: '',
+    titulo: '',
+    descricao: '',
+    categoria: '',
+    entidade: {} as Entidades,
   });
 
   useEffect(() => {
     if (id) {
-      // Carrega os detalhes do link com o ID fornecido
       LinksUteisService.findById(parseInt(id))
         .then((response) => {
-          setLink(response.data);
+          if(response.data){
+            setLink({
+              id: response.data.id,
+              link: response.data.link,
+              titulo: response.data.titulo,
+              descricao: response.data.descricao,
+              categoria: response.data.categoria,
+              entidade: response.data.entidade,
+            });
+          }
         })
         .catch((error) => {
           toast('Falha ao carregar os detalhes do link');
@@ -28,60 +39,71 @@ export function EditaLinkPage() {
     }
   }, [id]);
 
-  // Implemente a lógica para editar o link aqui
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { value, name } = event.target;
+    setLink((previousForm) => {
+        return {
+            ...previousForm,
+            [name]: value,
+        }
+    });
+  }
+
+  const onClickEditaLinks = () => {
+    console.log(link);
+       LinksUteisService.update(parseInt(id!), link)
+        .then((response) => {
+            console.log("Usuário link criado com sucesso!  ", response);
+            if(link.categoria === "Primeiro animal"){
+                navigate("/listaPrimeiroAnimal");
+            } else if(link.categoria === "Cuidados com animais"){
+                navigate("/listaCuidados");
+            } else {
+                navigate("/listaDenuncias");
+            }
+        })
+        .catch((error) => {
+            toast.error('Erro ao criar link.');
+            console.error("Erro ao criar link. ", error);
+        });
+  }
 
   return (
     <div className="container altura-rem">
       <ToastContainer />
       <h1 className="text-center titulo mt-3">Editar Link</h1>
-      <div className="row">
-        <div className="col">
-          {/* Formulário para editar o link */}
-          <form>
-            <div className="mb-3">
-              <label htmlFor="link" className="form-label">
-                Link
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="link"
-                name="link"
-                value={link.link}
-                onChange={(e) => setLink({ ...link, link: e.target.value })}
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="titulo" className="form-label">
-                Título
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="titulo"
-                name="titulo"
-                value={link.titulo}
-                onChange={(e) => setLink({ ...link, titulo: e.target.value })}
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="descricao" className="form-label">
-                Descrição
-              </label>
-              <textarea
-                className="form-control"
-                id="descricao"
-                name="descricao"
-                value={link.descricao}
-                onChange={(e) => setLink({ ...link, descricao: e.target.value })}
-              />
-            </div>
-            {/* Adicione mais campos de edição, se necessário */}
-            <button type="submit" className="btn btn-primary">
-              Salvar
-            </button>
-          </form>
-        </div>
+      <div className="row justify-content-start ms-5"> 
+        <Form.Item className="col-md-5 col-sm-12">
+            <label id="cadText" className="form-label">Link</label>
+            <Input value={link.link} name="link" onChange={onChange} />
+        </Form.Item>
+        <Form.Item className="col-md-5 col-sm-12">
+            <label id="cadText" className="form-label">Título</label>
+            <Input value={link.titulo} name="titulo" onChange={onChange} />
+        </Form.Item>
+        <Form.Item className="col-md-5 col-sm-12">
+            <label id="cadText" className="form-label">Descrição</label>
+            <Input value={link.descricao} name="descricao" onChange={onChange} />
+        </Form.Item>
+        <Form.Item className="col-md-5 col-sm-12">
+            <label id="cadText" className="form-label">Categoria</label>
+            <Select value={link.categoria} onChange={(value) => {setLink({ ...link, categoria: value });}}>
+
+                <Select.Option value="Primeiro animal">Primeiro animal</Select.Option>
+                <Select.Option value="Links para denuncia">Links para denuncia</Select.Option>
+                <Select.Option value="Cuidados com animais">Cuidados com animais</Select.Option>
+            </Select>
+        </Form.Item>
+      </div>
+      <div className="row justify-content-center mt-3">
+          <Form.Item  className="col-2">
+              <button type="submit" 
+                      className="btn btn-success"
+                      onClick={onClickEditaLinks}>
+                          
+                  Salvar
+              </button>
+          </Form.Item>
       </div>
     </div>
   );

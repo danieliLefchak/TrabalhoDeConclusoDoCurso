@@ -1,14 +1,13 @@
 import { Button, Card, Form, Input, Select, Upload } from "antd";
-import { FileImageOutlined } from "@ant-design/icons";
 import { ChangeEvent, useEffect, useState } from "react";
-import { Animais, Entidades, Imagem } from "../../commons/interfaces";
+import { Animais, Entidades } from "../../commons/interfaces";
 import { useNavigate } from "react-router-dom";
 import EntidadeService from "../../services/EntidadeService";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AnimaisService from "../../services/AnimaisService";
-import { UploadChangeParam } from "antd/lib/upload";
-import imageCompression from "browser-image-compression";
+import { UploadOutlined } from '@ant-design/icons';
+import { UploadChangeParam, UploadFile } from "antd/es/upload";
 
 export function CadAnimaisPage() {
   const [form, setForm] = useState({
@@ -21,7 +20,8 @@ export function CadAnimaisPage() {
     raca: "",
     especie: "",
     doencas: "",
-    imagens: [] as Imagem[],
+    imagemNome: "",
+	  conteudoImagem: "",
     entidade: {} as Entidades,
   });
 
@@ -29,7 +29,7 @@ export function CadAnimaisPage() {
   var nomeStorage: any = localStorage.getItem("user");
   var nome = JSON.parse(nomeStorage).toString();
   const [entidades, setEntidade] = useState([]);
-  const [images, setImages] = useState<Imagem[]>([]);
+  const [imagens, setImagens] = useState<File[]>([]);
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = event.target;
@@ -67,44 +67,14 @@ export function CadAnimaisPage() {
       });
   };
 
-  const onFileChangeHandler = async (info: UploadChangeParam) => {
-    if (info.fileList.length > 0) {
-      const newImages = await Promise.all(
-        info.fileList.map(async (file) => {
-          const reader = new FileReader();
-          reader.readAsDataURL(file.originFileObj!);
-  
-          return new Promise<Imagem>(async (resolve) => {
-            reader.onload = async () => {
-              const options = {
-                maxSizeMB: 0.5, 
-                maxWidthOrHeight: 800, 
-              };
-  
-              try {
-                const compressedFile = await imageCompression(file.originFileObj!, options);
-  
-                const readerCompressed = new FileReader();
-                readerCompressed.readAsDataURL(compressedFile);
-  
-                readerCompressed.onload = (e) => {
-                  const base64CompressedData = e.target?.result as string || "";
-  
-                  resolve({
-                    imagemNome: compressedFile.name,
-                    conteudoImagem: base64CompressedData,
-                    tipo: compressedFile.type || "",
-                  });
-                };
-              } catch (error) {
-                console.error("Erro na compressão da imagem", error);
-              }
-            };
-          });
-        })
-      );
-  
-      setImages(newImages);
+  /*const onFileChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {    
+    setImagens(event.target.files ? event.target.files[0] : null);
+  };*/
+  const onFileChangeHandler = (info: UploadChangeParam<UploadFile<any>>) => {
+    if (info.fileList) {
+      // Filtrar os objetos UploadFile para obter os objetos File
+      const fileList = info.fileList.filter((file) => !!file.originFileObj).map((file) => file.originFileObj as File);
+      setImagens(fileList);
     }
   };
 
@@ -113,25 +83,30 @@ export function CadAnimaisPage() {
       ...form,
       idade: form.idade!,
       entidade: { ...form.entidade },
+      imagemNome: imagens.map((imagem) => imagem.name),
+      conteudoImagem: imagens.map((imagem) => imagem.type),
     };
   
     const formData = new FormData();
-  
-    images.forEach((image, index) => {
-      formData.append(`imagens[${index}].imagemNome`, image.imagemNome);
-      formData.append(`imagens[${index}].conteudoImagem`, image.conteudoImagem);
-      formData.append(`imagens[${index}].tipo`, image.tipo);
+    for (let i = 0; i < imagens.length; i++) {
+      formData.append('imagens', imagens[i]);
+    }    
+    //formData.append('imagens', imagens);
+    /*const blobimg = new Blob([JSON.stringify(imagens)], {
+      type: 'application/json'
     });
-  
-    const animaisBlob = new Blob([JSON.stringify(animais)], {
-      type: "application/json",
+    formData.append('imagens', blobimg);*/
+
+    const blob = new Blob([JSON.stringify(animais)], {
+      type: 'application/json'
     });
-  
-    formData.append("animais", animaisBlob);
-  
+    formData.append('animais', blob);
+    
     AnimaisService.save(formData)
       .then((response) => {
-        console.log("Animal cadastrado com sucesso!  ", response);
+        toast.success("Animal cadastrado com sucesso! ");
+        console.log("Animal cadastrado com sucesso! ", response);
+        navigate("/animais");
       })
       .catch((error) => {
         if (error.response.data && error.response.data.validationErrors) {
@@ -141,7 +116,6 @@ export function CadAnimaisPage() {
         }
       });
   };
-  
 
   return (
     <div className="container d-flex justify-content-center">
@@ -227,29 +201,41 @@ export function CadAnimaisPage() {
               </Select>
             </Form.Item>
 
-
             <Form.Item className="col-md-5 col-sm-12">
               <label id="cadText" className="form-label me-2">
                 Imagens
               </label>
               <Upload
                 name="imagens"
-                accept=".jpg,.jpeg,.png"
-                fileList={images.map((image, index) => ({
-                  uid: index.toString(),
-                  name: image.imagemNome,
-                  status: "done",
-                  url: `data:${image.tipo};base64,${btoa(image.conteudoImagem as string)}`,
-                }))}
+                multiple
                 onChange={onFileChangeHandler}
-                listType="picture-card"
               >
-                <div>
-                  <FileImageOutlined />
-                  <div className="ant-upload-text">Selecione imagens</div>
-                </div>
+                <Button icon={<UploadOutlined />}>Selecionar Imagens</Button>
               </Upload>
+              <div>
+                {imagens.map((imagem, index) => (
+                  <img
+                    key={index}
+                    style={{ width: '100px', height: '100px', marginRight: '10px' }}
+                    src={`http://localhost:9000/imganimais/${imagem.name}`}
+                  />
+                ))}
+              </div>
             </Form.Item>
+            {/*<Form.Item className="col-md-5 col-sm-12">
+              <label id="cadText" className="form-label me-2">
+                Imagens
+              </label>
+              <input
+                className="form-control"
+                type="file"
+                name="imagens"
+                onChange={onFileChangeHandler}
+              />
+              {(form.imagemNome &&
+                <img style={{width:'100px', height:'100px'}} src={`http://localhost:9000/imganimais/${form.imagemNome}`} />
+              )}
+              </Form.Item>*/}
           </div>
           
 
