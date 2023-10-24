@@ -8,9 +8,14 @@ const findAll = () => {
   return api.get('/animais');
 }
 
+const findLastTenAnimals = () => {
+  return api.get('/animais/lista');
+}
+
 const AnimaisService = {
   save,
-  findAll
+  findAll,
+  findLastTenAnimals,
 }
 
 export default AnimaisService;

@@ -5,13 +5,6 @@ export interface UserLogin {
 	tipoUsuario?: string;
 }
 
-export interface Imagem {
-	id?: number;
-	imagemNome: string;
-	conteudoImagem: string;
-	tipo: string;
-}
-
 export interface Entidades {
     id?: number;
 	nomeFant: String;

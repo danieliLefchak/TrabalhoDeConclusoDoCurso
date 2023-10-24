@@ -1,28 +1,30 @@
 import Card from "antd/es/card/Card";
 import Meta from "antd/es/card/Meta";
-import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
+import { EditOutlined, EllipsisOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useEffect, useState } from "react";
-import { Animais, Imagem } from "../../commons/interfaces";
+import { Animais, UserLogin } from "../../commons/interfaces";
 import AnimaisService from "../../services/AnimaisService";
 import PrimeiroAnimal from "../../assets/PrimeiroAnimal.jpg";
 import CuidadosAnimais from "../../assets/CuidadosAnimaisCp.jpg";
 import AnimailMausTratos from "../../assets/AnimalMausTratos.jpg";
-import semImagem from "../../assets/semImagem.png";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import UsuarioService from "../../services/UsuarioService";
 
 export function HomePage() {
     const [data, setData] = useState([]);
     const navigate = useNavigate();
-    const [encontrado, setEncontrado] = useState(false)
+    const [encontrado, setEncontrado] = useState(false);
+    const [roleAdmin, setRoleAdmin] = useState(false);
 
     useEffect(() => {
         loadData();
+        returnVal();
     }, []);
 
-    const loadData = () => {//criar uma lista que vai mostrar apenas os mais velhos tipo uns 10
-        AnimaisService.findAll()
+    const loadData = () => {
+        AnimaisService.findLastTenAnimals()
             .then((response) => {
                 setData(response.data);
             })
@@ -37,9 +39,41 @@ export function HomePage() {
             } else{
                 setEncontrado(false);
             }
-
-            console.log(encontrado);
     };
+
+    const returnVal = () => {
+        const nomeStorage = localStorage.getItem("user");
+        if (nomeStorage && nomeStorage !== 'undefined') {
+            UsuarioService.findByName(JSON.parse(nomeStorage).toString())
+              .then((response) => {
+                const userResponse = response.data;
+    
+                const userLogin: UserLogin = {
+                  id: userResponse.id,
+                  username: userResponse.username,
+                  password: userResponse.password,
+                  tipoUsuario: userResponse.tipoUsuario,
+                };
+    
+                if(userLogin.tipoUsuario === "adotante"){
+                  setRoleAdmin(false);
+                } else if(userLogin.tipoUsuario === "entidade"){
+                  setRoleAdmin(true);
+                }
+              })
+              .catch((error) => {
+                console.error("Erro ao buscar usuário: ", error);
+              });
+        }
+    }
+
+    const actions = roleAdmin ? [
+        <DeleteOutlined key="delete" />,
+        <EditOutlined key="edit" />,
+        <EllipsisOutlined key="ellipsis" />,
+    ] : [
+        <EllipsisOutlined key="ellipsis"/>,
+    ];
 
     return(
         <div>
@@ -60,26 +94,22 @@ export function HomePage() {
                 : <div></div>}
             </section>
             <h1 className="text-center titulo">Animais para adoção</h1>
-            <div className="row row-cols-1 row-cols-md-4 g-4 mb-2 mt-2">
-                {data.map((animais: Animais) => (
-                    <div className="col-sm-5 col-md-4 col-lg-2 me-2 ms-2">
-                        <Card
-                            style={{ width: 240 }}
-                            cover={
+            <div className="row row-cols-1 row-cols-md-4 g-4 mb-2 mt-2 ms-5">
+            {data.map((animais: Animais) => (
+                    <Card
+                        id="cardFixBg"
+                        className="col-sm-5 col-md-4 col-lg-2 me-3"
+                        style={{ width: 300 }}
+                        cover={
                             <img
-                                alt="animais"
-                                src={animais.conteudoImagem.length > 0 ? animais.conteudoImagem[0].conteudoImagem : semImagem}
+                                className="mt-2"
+                                src={`http://localhost:9000/imganimais/${animais.imagemNome![0]}`}
                             />
-                            }
-                            actions={[
-                                <SettingOutlined key="setting" />,
-                                <EditOutlined key="edit" />,
-                                <EllipsisOutlined key="ellipsis" />,
-                            ]}
-                        >
-                            <Meta title={animais.nome} description={animais.especie} />
-                        </Card>
-                    </div>
+                        }
+                        actions={actions}
+                    >
+                        <Meta title={animais.nome} description={animais.especie} />
+                    </Card>
                 ))}
             </div>
             <h1 className="text-center mb-2 titulo">Informações Uteis</h1>

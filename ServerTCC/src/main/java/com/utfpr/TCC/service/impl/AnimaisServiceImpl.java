@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -107,23 +106,15 @@ public class AnimaisServiceImpl extends CrudServiceImpl<Animais, Long> implement
 		return this.animaisRepository;
 	}
 	
+	@Override
 	public Animais saveWithFile(Animais entity, List<MultipartFile> files) {
-		/*String fileType = FileTypeUtils.getFileType(file);
-		
-		if (fileType != null) {
-			FileResponse fileResponse = minioService.putObject(file, "imganimais", fileType);
-			
-			entity.setImagemNome(fileResponse.getFilename());
-			entity.setConteudoImagem(fileResponse.getContentType());
-		}
-		return super.save(entity);*/
 		if (files != null && !files.isEmpty()) {
 	        List<FileResponse> fileResponses = new ArrayList<>();
 
 	        for (MultipartFile file : files) {
 	            String fileType = FileTypeUtils.getFileType(file);
 	            if (fileType != null) {
-	                FileResponse fileResponse = minioService.putObject(file, "imganimais", fileType, entity.getId());
+	                FileResponse fileResponse = minioService.putObject(file, "imganimais", fileType);
 	                fileResponses.add(fileResponse);
 	            }
 	        }
@@ -145,21 +136,15 @@ public class AnimaisServiceImpl extends CrudServiceImpl<Animais, Long> implement
 
 	    return super.save(entity);
 	}
-
+	
 	@Override
-	public void downloadFile(Long id, HttpServletResponse response) {
-		/*try {
-			
-	                }
-	            }
-	        }else {
-	            System.out.println("Erro ao salvar imagens");
-	        }
-	    } catch (UnsupportedEncodingException e) {
-	        System.out.println((e.getMessage()));
-	    } catch (IOException e) {
-	        System.out.println((e.getMessage()));
-	    }*/
+	public List<Animais> findLastTenAnimals(){
+		List<Animais> UltimosAnimais = new ArrayList<Animais>();
+		
+		List<Animais> animais = animaisRepository.findAll();
+		
+		UltimosAnimais = animais.subList(Math.max(animais.size() - 10, 0), animais.size());
+		
+		return UltimosAnimais;
 	}
-
 }

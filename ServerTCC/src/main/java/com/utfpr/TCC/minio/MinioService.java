@@ -8,7 +8,7 @@ import java.util.List;
 
 public  interface MinioService {
 	
-	FileResponse putObject(MultipartFile multipartFile, String bucketName, String fileType, Long id);
+	FileResponse putObject(MultipartFile multipartFile, String bucketName, String fileType);
 	
 	InputStream downloadObject(String bucketName, String objectName);
 	

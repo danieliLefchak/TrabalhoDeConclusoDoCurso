@@ -67,9 +67,6 @@ export function CadAnimaisPage() {
       });
   };
 
-  /*const onFileChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {    
-    setImagens(event.target.files ? event.target.files[0] : null);
-  };*/
   const onFileChangeHandler = (info: UploadChangeParam<UploadFile<any>>) => {
     if (info.fileList) {
       // Filtrar os objetos UploadFile para obter os objetos File
@@ -90,12 +87,7 @@ export function CadAnimaisPage() {
     const formData = new FormData();
     for (let i = 0; i < imagens.length; i++) {
       formData.append('imagens', imagens[i]);
-    }    
-    //formData.append('imagens', imagens);
-    /*const blobimg = new Blob([JSON.stringify(imagens)], {
-      type: 'application/json'
-    });
-    formData.append('imagens', blobimg);*/
+    }
 
     const blob = new Blob([JSON.stringify(animais)], {
       type: 'application/json'
@@ -222,20 +214,6 @@ export function CadAnimaisPage() {
                 ))}
               </div>
             </Form.Item>
-            {/*<Form.Item className="col-md-5 col-sm-12">
-              <label id="cadText" className="form-label me-2">
-                Imagens
-              </label>
-              <input
-                className="form-control"
-                type="file"
-                name="imagens"
-                onChange={onFileChangeHandler}
-              />
-              {(form.imagemNome &&
-                <img style={{width:'100px', height:'100px'}} src={`http://localhost:9000/imganimais/${form.imagemNome}`} />
-              )}
-              </Form.Item>*/}
           </div>
           
 

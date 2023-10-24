@@ -39,8 +39,6 @@ export function NavBar(){
               tipoUsuario: userResponse.tipoUsuario,
             };
 
-            console.log("LOGADO" , userLogin);
-
             if(userLogin.tipoUsuario === "adotante"){
               setRoleAdmin(false);
               setRoleUser(true);

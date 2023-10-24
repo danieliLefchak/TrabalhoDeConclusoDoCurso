@@ -55,8 +55,8 @@ public class AnimaisController extends CrudController<Animais, AnimaisDto, Long>
 		return animaisService.saveWithFile(entity, file);
 	}
 	
-	@GetMapping(value = "download/{id}")
-	public void downloadFile(@PathVariable("id") Long id, HttpServletResponse response) {
-		animaisService.downloadFile(id, response);
+	@GetMapping(value = "lista")
+	public List<Animais> findLastTenAnimals() {
+		return animaisService.findLastTenAnimals();
 	}
 }

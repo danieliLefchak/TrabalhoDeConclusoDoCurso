@@ -41,5 +41,5 @@ public interface AnimaisService extends CrudService<Animais, Long> {
 	
 	Animais saveWithFile(Animais animal, List<MultipartFile> files);
 	
-	void downloadFile(Long id, HttpServletResponse response);
+	List<Animais> findLastTenAnimals();
 }

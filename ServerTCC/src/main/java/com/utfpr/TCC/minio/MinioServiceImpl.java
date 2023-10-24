@@ -22,7 +22,7 @@ public  class MinioServiceImpl implements MinioService {
 
 	@SneakyThrows
 	@Override
-	public  FileResponse putObject(MultipartFile multipartFile, String bucketName, String fileType, Long id) {
+	public  FileResponse putObject(MultipartFile multipartFile, String bucketName, String fileType) {
 		try {
 			bucketName = StringUtils.isNotBlank(bucketName) ? bucketName : minioProperties.getBucketName();
 			if (!this.bucketExists(bucketName)) {
@@ -32,7 +32,7 @@ public  class MinioServiceImpl implements MinioService {
 			String fileName = multipartFile.getOriginalFilename();
 			
 			Long fileSize = multipartFile.getSize();
-			String objectName = id + ":" + UUID.randomUUID().toString().replaceAll("-", "")
+			String objectName = UUID.randomUUID().toString().replaceAll("-", "")
                     + fileName.substring(fileName.lastIndexOf("."));
 			LocalDateTime createdTime = LocalDateTime.now();
 			minioUtil.putObject(bucketName, multipartFile, objectName,fileType);
