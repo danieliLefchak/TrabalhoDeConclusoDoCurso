@@ -6,6 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -44,14 +45,13 @@ public class AnimaisController extends CrudController<Animais, AnimaisDto, Long>
 		return this.modelMapper;
 	}
 	
-	@Override
-	public GenericResponse create(@RequestBody @Valid Animais entity) {
-		animaisService.save(entity);
-		return new GenericResponse("Registro salvo com sucesso");
+	@PostMapping(value = "upload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_OCTET_STREAM_VALUE})
+	public Animais save(@RequestPart("animais") @Valid Animais entity, @RequestPart("imagens") @Valid List<MultipartFile> file) {
+		return animaisService.saveWithFile(entity, file);
 	}
 	
-	@PostMapping(value = "upload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_OCTET_STREAM_VALUE})
-	public Animais saveProduct(@RequestPart("animais") @Valid  Animais entity, @RequestPart("imagens") @Valid  List<MultipartFile> file) {
+	@PutMapping(value = "upload/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_OCTET_STREAM_VALUE})
+	public Animais update( @PathVariable Long id, @RequestPart("animais") @Valid Animais entity, @RequestPart("imagens") @Valid List<MultipartFile> file) {
 		return animaisService.saveWithFile(entity, file);
 	}
 	

@@ -21,7 +21,8 @@ insert into links_uteis (categoria, descricao, entidade_id, link, titulo) values
 insert into links_uteis (categoria, descricao, entidade_id, link, titulo) values ('Cuidados com animais', 'mostra uma lista de links com informações de cuidados para animais', 1, 'https://www.petz.com.br/blog/cachorros/saude-e-cuidados-cachorros/', ' Tudo relacionado a Saúde e Cuidados de Cachorros');
 insert into links_uteis (categoria, descricao, entidade_id, link, titulo) values ('Cuidados com animais', 'explica sobre cuidados para animais de porte grande', 1, 'https://blog.polipet.com.br/caes-de-grande-porte-4-cuidados-diarios-que-eles-exigem/', 'Cães de grande porte: 4 cuidados diários que eles exigem');
 
-
+insert into animais (conteudo_imagem, data_cadastro, doencas, entidade_id, especie, genero, idade, imagem_nome, medicacoes, nome, personalidade, porte, raca) values ('{image/jpg,image/jpg}', '2023-10-26', 'Nenhuma', 1, 'Cachorro', 'Masculino', 10, '{e1f80c66d8ef42a0866b767af4dd5e63.jpg,ae80b107d9ba4bd7ae7d2b64180c914a.jpg}', 'Não', 'Pirata', 'Calmo e agressivo', 'Médio', 'Dalmata');
+insert into animais (conteudo_imagem, data_cadastro, doencas, entidade_id, especie, genero, idade, imagem_nome, medicacoes, nome, personalidade, porte, raca) values ('{image/jpg,image/jpg}', '2023-10-28', 'Nenhuma', 1, 'Cachorro', 'Feminino', 6, '{994a1f6a06264504a06aadedc68b0efa.jpg,dcddf8d465654ee88f93986455974846.jpg}', 'Não', 'Mel', 'Brincalhona', 'Grande', 'Vira Lata');
 
 
 

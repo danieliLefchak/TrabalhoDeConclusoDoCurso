@@ -20,7 +20,7 @@ public class PossiveisAdotatesDto {
 
 	private String estado;
 	
-	private String nome;
+	private String nomeCompleto;
 	
 	private long numero_casa;
 	
@@ -28,12 +28,9 @@ public class PossiveisAdotatesDto {
 
 	private String profissao;
 	
-	//se possuir animais qual a quantidade
 	private int quantidade_animais;
 	
-	//se possuir animais quais são as especies deles
 	private String especie_animais;
 	
-	//se funcionar o filtro colocar na tabela
 	private LocalDate dataInteresse;
 }

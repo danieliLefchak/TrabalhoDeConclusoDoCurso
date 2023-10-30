@@ -2,8 +2,6 @@ package com.utfpr.TCC.model;
 
 import java.time.LocalTime;
 
-import com.utfpr.TCC.annotation.UniqueCnpj;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,7 +28,6 @@ public class Entidades{
 	@NotNull
 	private String nomeFant;
 	
-	@UniqueCnpj
 	private String cnpj;
 	
 	@NotNull

@@ -3,6 +3,7 @@ package com.utfpr.TCC.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.utfpr.TCC.model.Animais;
+import com.utfpr.TCC.model.Entidades;
 
 import java.util.List;
 
@@ -36,4 +37,6 @@ public interface AnimaisRepository extends JpaRepository<Animais, Long>{
 	List<Animais> findByNomeAndEspecieAndRaca(String nome, String especie, String raca);
 	
 	List<Animais> findByPorteAndEspecieAndRacaAndNome(String porte, String especie, String raca, String nome);
+	
+	List<Animais> findByEntidade(Entidades entidade);
 }

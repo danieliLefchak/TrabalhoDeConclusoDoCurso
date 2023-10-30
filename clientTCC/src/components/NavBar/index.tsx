@@ -72,7 +72,7 @@ export function NavBar(){
     {
       key: '2',
       label: (
-        <Link to="/" className="text-decoration-none">
+        <Link to="/MeusDados" className="text-decoration-none">
           Meus dados
         </Link>
       ),

@@ -2,7 +2,11 @@ package com.utfpr.TCC.controller;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -50,5 +54,47 @@ public class PossiveisAdotantesController extends CrudController<PossiveisAdotan
 		usuario.save(user);
 		possiveisAdotantesService.save(adotante);
 		return new GenericResponse("Registro salvo com sucesso");
+	}
+	
+	@Override
+	@PutMapping("{id}")
+	public GenericResponse update(@RequestBody @Valid PossiveisAdotantes adotante, @PathVariable Long id) {
+		try {
+			PossiveisAdotantes ent = possiveisAdotantesService.findOne(id);
+			
+			if(ent != null) {
+				Usuarios user = adotante.getUser();
+				
+				usuario.save(user);
+				possiveisAdotantesService.save(adotante);
+				return new GenericResponse("Registro atualizado com sucesso");
+			} else {
+				return new GenericResponse("Registro inexistente");
+			}
+		}catch (Exception e) {
+			return new GenericResponse("Erro ao atualizar registro!");
+		}
+	}
+	
+	@GetMapping("findById/{id}")
+	public ResponseEntity<PossiveisAdotantes> findById(@PathVariable Long id){
+		PossiveisAdotantes entity = possiveisAdotantesService.findOne(id);
+		
+		if(entity != null) {
+			return ResponseEntity.ok(possiveisAdotantesService.findOne(id));
+		} else {
+			return ResponseEntity.noContent().build();
+		}
+	}
+	
+	@GetMapping("/findAdotanteByUser/{username}")
+	public ResponseEntity<PossiveisAdotatesDto> findEntidadeByUser(@PathVariable String username){
+		Usuarios entity = usuario.findByusername(username);
+		
+		if(entity != null) {
+			return ResponseEntity.ok(super.convertToDto(possiveisAdotantesService.findByUser(entity)));
+		} else {
+    		return ResponseEntity.noContent().build();
+    	}
 	}
 }

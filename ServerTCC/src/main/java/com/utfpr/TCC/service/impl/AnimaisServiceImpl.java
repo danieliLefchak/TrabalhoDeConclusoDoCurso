@@ -13,6 +13,7 @@ import com.utfpr.TCC.minio.FileResponse;
 import com.utfpr.TCC.minio.FileTypeUtils;
 import com.utfpr.TCC.minio.MinioService;
 import com.utfpr.TCC.model.Animais;
+import com.utfpr.TCC.model.Entidades;
 import com.utfpr.TCC.repository.AnimaisRepository;
 import com.utfpr.TCC.service.AnimaisService;
 
@@ -107,6 +108,14 @@ public class AnimaisServiceImpl extends CrudServiceImpl<Animais, Long> implement
 	}
 	
 	@Override
+	public Animais save(Animais entity) {
+		LocalDate dataCad = LocalDate.now();
+        
+        entity.setDataCadastro(dataCad);
+		return animaisRepository.save(entity);
+	}
+	
+	@Override
 	public Animais saveWithFile(Animais entity, List<MultipartFile> files) {
 		if (files != null && !files.isEmpty()) {
 	        List<FileResponse> fileResponses = new ArrayList<>();
@@ -134,7 +143,7 @@ public class AnimaisServiceImpl extends CrudServiceImpl<Animais, Long> implement
 	        entity.setConteudoImagem(conteudoImagens);
 	    }
 
-	    return super.save(entity);
+	    return animaisRepository.save(entity);
 	}
 	
 	@Override
@@ -146,5 +155,10 @@ public class AnimaisServiceImpl extends CrudServiceImpl<Animais, Long> implement
 		UltimosAnimais = animais.subList(Math.max(animais.size() - 10, 0), animais.size());
 		
 		return UltimosAnimais;
+	}
+
+	@Override
+	public List<Animais> findByEntidade(Entidades entidade) {
+		return animaisRepository.findByEntidade(entidade);
 	}
 }

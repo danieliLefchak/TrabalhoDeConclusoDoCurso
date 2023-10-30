@@ -72,6 +72,11 @@ public class WebSecurity {
 				
 				.requestMatchers(antMatcher("/entidades/findEntidadeByUser/**")).hasAnyRole("ADMIN")
 				.requestMatchers(antMatcher(HttpMethod.PUT, "/entidades/**")).hasAnyRole("ADMIN")
+				.requestMatchers(antMatcher(HttpMethod.DELETE, "/entidades/**")).hasAnyRole("ADMIN")
+				.requestMatchers(antMatcher(HttpMethod.GET, "/entidades/findById/**")).hasAnyRole("ADMIN")
+				
+				.requestMatchers(antMatcher(HttpMethod.DELETE, "/possiveisAdotantes/**")).hasAnyRole("USER")
+				.requestMatchers(antMatcher(HttpMethod.GET, "/possiveisAdotantes/findById/**")).hasAnyRole("USER")
 				
 				.requestMatchers(antMatcher(HttpMethod.PUT, "/animais/**")).hasAnyRole("ADMIN")
 				.requestMatchers(antMatcher(HttpMethod.POST, "/animais/**")).hasAnyRole("ADMIN")
@@ -80,6 +85,11 @@ public class WebSecurity {
 				.requestMatchers(antMatcher(HttpMethod.POST, "/linksUteis/**")).hasAnyRole("ADMIN")
 				
 				.requestMatchers(antMatcher(HttpMethod.GET, "/usuarios/findByName/**")).hasAnyRole("ADMIN", "USER")
+				
+				.requestMatchers(antMatcher(HttpMethod.POST, "/interessados/**")).hasAnyRole("USER")
+				.requestMatchers(antMatcher(HttpMethod.PUT, "/interessados/**")).hasAnyRole("ADMIN")
+				
+				.requestMatchers(antMatcher("/possiveisAdotantes/findAdotanteByUser/**")).hasAnyRole("USER")
 				
 				.anyRequest().authenticated()
 		);

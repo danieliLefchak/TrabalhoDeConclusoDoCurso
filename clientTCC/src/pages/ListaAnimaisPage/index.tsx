@@ -6,9 +6,11 @@ import { Animais, UserLogin } from "../../commons/interfaces";
 import Meta from "antd/es/card/Meta";
 import { ToastContainer, toast } from "react-toastify";
 import UsuarioService from "../../services/UsuarioService";
+import { Link, useNavigate } from 'react-router-dom';
 
 export function ListaAnimaisPage(){
     const [data, setData] = useState([]);
+    const navigate = useNavigate();
     const [roleAdmin, setRoleAdmin] = useState(false);
 
     useEffect(() => {
@@ -57,16 +59,30 @@ export function ListaAnimaisPage(){
         }
     }
 
-    const actions = roleAdmin ? [
-        <DeleteOutlined key="delete" />,
-        <EditOutlined key="edit" />,
-        <EllipsisOutlined key="ellipsis" />,
-    ] : [
-        <EllipsisOutlined key="ellipsis"/>,
-    ];
+    const handleDelete = (linkId: number) => {
+        AnimaisService.deleteById(linkId)
+            .then(() => {
+                toast.success('Animal excluido com sucesso.');
+                window.location.reload();
+            })
+            .catch(() => {
+                toast.error('Falha ao excluir animal.');
+            });       
+    };
+
+    const handleEdit = (animalId: number) => {
+        AnimaisService.findOne(animalId)
+            .then((response) =>{                
+                navigate(`/editaAnimal/${response.data.id}`);
+            })
+            .catch((error) => {
+                console.log('Falha ao carregar o animal. ', error);
+                toast.error('Falha ao carregar o animal.');
+            });
+    };
 
     return(
-        <div className="altura-rem">
+        <div className="container-fluid">
             <ToastContainer />
             <h1 className="text-center titulo mt-3">Animais para adoção</h1>
             <div className="row row-cols-1 row-cols-md-4 g-4 mb-2 mt-2 ms-5">
@@ -81,7 +97,17 @@ export function ListaAnimaisPage(){
                                 src={`http://localhost:9000/imganimais/${animais.imagemNome![0]}`}
                             />
                         }
-                         actions={actions}
+                         actions={roleAdmin ? [
+                            <DeleteOutlined key="delete" onClick={() => handleDelete(animais.id!)} />,
+                            <EditOutlined key="edit" onClick={() => handleEdit(animais.id!)} />,
+                            <Link to={`/animal/${animais.id}`}>
+                                <EllipsisOutlined key="ellipsis" />
+                            </Link>,
+                        ] : [
+                            <Link to={`/animal/${animais.id}`}>
+                                <EllipsisOutlined key="ellipsis" />
+                            </Link>,
+                        ]}
                     >
                         <Meta title={animais.nome} description={animais.especie} />
                     </Card>

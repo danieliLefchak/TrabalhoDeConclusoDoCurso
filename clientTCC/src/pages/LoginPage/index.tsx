@@ -45,7 +45,7 @@ export function LoginPage(){
       };
 
     return(
-        <div className="container altura-rem d-flex justify-content-center align-items-center">
+        <div className="container-fluid d-flex justify-content-center align-items-center">
           <ToastContainer/>
             <Card id="cardCadLogin">
                 <h2 id="cadText" className="text-center mb-4 mt-2">Login</h2>

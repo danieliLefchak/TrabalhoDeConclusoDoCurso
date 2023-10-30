@@ -5,6 +5,10 @@ import java.time.LocalTime;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.validation.constraints.NotNull;
@@ -19,16 +23,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Interessados {
-	@EmbeddedId
-	private CompositeInteressados id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
 	
 	@NotNull
-	@MapsId("adotantes")
+	@JoinColumn(name="adotantes_id")
 	@ManyToOne
 	private PossiveisAdotantes adotantes; 
 	
 	@NotNull
-	@MapsId("animais")
+	@JoinColumn(name="animais_id")
 	@ManyToOne
 	private Animais animais;
 	
@@ -40,5 +45,5 @@ public class Interessados {
 	
 	private LocalTime horario_visita;
 	
-	private LocalDate dataVisita;
+	private LocalDate data_visita;
 }

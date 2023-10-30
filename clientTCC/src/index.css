@@ -8,7 +8,8 @@
     --cinzaLogo: #757575c5;
     --verdeLogo: #cce5667a;
     --pretoLogo: #000000;
-    --verdeCardLink: #cce5662b;
+    --verdeCardLink: #cce56670;
+    --verdeModal: #cce566bd;
 }
 
 #cardFixBg{
@@ -23,8 +24,6 @@
     border-color: var(--verdeLogoCoelho);
 }
 
-/*parece que tem algo interfirindo com a cor de fundo
-  deixando ela mais "vibrante" que no rodape*/
 #navAni{
     background-color: var(--verdeNav);
     padding: .2rem;
@@ -60,10 +59,21 @@
     background-color: var(--verdeLogo);
 }
 
+#cardCadLink{
+    width: 65rem;
+    height: 35rem;
+    background-color: var(--verdeLogo);
+}
+
 #cardCadLogin{
     width: 36rem;
     height: 30rem;
+    border-radius: 3rem;
     background-color: var(--verdeLogo);
+}
+
+#aniDetalhesTxt{
+    color: var(--cinzaLogoPassaro);
 }
 
 .backGroud{
@@ -108,10 +118,6 @@
     color: var(--cinzaLogoPassaro);
 }
 
-.altura-rem {
-    height: 38.3rem;
-}
-
 .cardTam {
     background-color: var(--verdeCardLink);
     width: 32rem; 
@@ -124,4 +130,68 @@
 
 .textLinkBanner:hover{
     color: var(--verdeLogoCoelho);
+}
+
+.container-fluid {
+    height: 100vh;
+    overflow-y: scroll;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+  
+.modal-content {
+    background-color: var(--verdeModal);
+    width: 35rem;
+    height: 18rem;
+    padding: 2rem;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.cardTamColor {
+    border-color: var(--verdeLogo);
+    border-width: 0.20rem;
+}
+
+.logoPrf{
+    width: 15rem;
+    border: 0.5rem solid;
+    border-color: var(--cinzaLogoPassaro);
+    position: absolute;
+}
+
+.bannerPrf {
+    height: 45vh;
+    margin-bottom: 2rem;
+    padding: 2rem;
+    background: url('/src/assets/fundoPerfil1.jpg') center /cover no-repeat fixed;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    color: var(--textoBanner);
+}
+
+.cardColor{
+    margin: 0 auto;
+    background-color: var(--verdeLogo);
+    max-width: 65rem;
+    position: static;
+}
+
+.bannerButtons{
+    position: absolute;
+    top: 7rem;
+    right: 4rem;
+    display: flex;
+    gap: 2.3rem;
+    font-size: 1.3rem;
 }

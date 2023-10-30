@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import { Entidades, LinksUteis, UserLogin } from "../../commons/interfaces";
+import { LinksUteis, UserLogin } from "../../commons/interfaces";
 import LinksUteisService from "../../services/LinksUteisService";
 import { Button, Card } from "antd";
 import { ToastContainer, toast } from 'react-toastify';
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import EntidadeService from "../../services/EntidadeService";
 import { useNavigate } from "react-router-dom";
 import UsuarioService from "../../services/UsuarioService";
 
@@ -13,14 +12,6 @@ export function ListaCuidadosAnimaisPage(){
     const [isAdmin, setIsAdmin] = useState(false);
     const navigate = useNavigate();
     const nomeStorage: any = localStorage.getItem("user");
-    const [linkEncontrado, setLinkEncontrado] = useState({
-        id: undefined,
-        link: '',
-        titulo: '',
-        descricao: '',
-        categoria: '',
-        entidade: {} as Entidades,
-    });
 
     useEffect(() => {
         loadData();
@@ -66,32 +57,8 @@ export function ListaCuidadosAnimaisPage(){
 
     const handleEdit = (linkId: number) => {
         LinksUteisService.findById(linkId)
-            .then((response) =>{
-                const linkData = response.data;
-
-                setLinkEncontrado({
-                    id: linkData.id,
-                    link: linkData.link,
-                    titulo: linkData.titulo,
-                    descricao: linkData.descricao,
-                    categoria: linkData.categoria,
-                    entidade: linkData.entidade,
-                });
-
-                EntidadeService.findByUser(JSON.parse(nomeStorage).toString())
-                .then((response) => {
-                    const entidadeData = response.data;
-
-                    if (entidadeData.id === linkEncontrado.entidade.id) {
-                        navigate(`/editaLink/${linkEncontrado.id}`);
-                    } else {
-                        toast.warning('Somente a entidade que cadastrou esse link pode edita-lo.');
-                    }
-                })
-                .catch((error) => {
-                    console.log('Falha ao carregar a entidade. ', error);
-                    toast.error('Falha ao carregar a entidade.');
-                });
+            .then((response) =>{                
+                navigate(`/editaLink/${response.data.id}`);
             })
             .catch((error) => {
                 console.log('Falha ao carregar o link. ', error);
@@ -111,7 +78,7 @@ export function ListaCuidadosAnimaisPage(){
     };
 
     return(
-        <div className="container altura-rem">
+        <div className="container-fluid">
             <ToastContainer />
             <h1 className="text-center titulo">Cuidados com Animais</h1>
             <div className="row row-cols-1 row-cols-md-2 row-cols-lg-2 g-4 mb-2 mt-2 d-flex justify-content-center align-items-center">

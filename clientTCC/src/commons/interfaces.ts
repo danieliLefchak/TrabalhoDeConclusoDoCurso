@@ -65,9 +65,12 @@ export interface LinksUteis {
 }
 
 export interface Interessados {
+	id?: number;
 	adotantes: PossiveisAdotantes;
 	animais: Animais;
 	visto: Boolean;
 	realizado: Boolean;
 	cancelado: Boolean;
+	data_visita: Date;
+	horario_visita: string;
 }

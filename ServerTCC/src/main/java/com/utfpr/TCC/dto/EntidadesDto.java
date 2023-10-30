@@ -8,7 +8,7 @@ import lombok.Data;
 public class EntidadesDto {
 	private long id;
 	
-	private String nome;
+	private String nomeFant;
 	
 	private String cnpj;
 	

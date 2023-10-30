@@ -67,13 +67,27 @@ export function HomePage() {
         }
     }
 
-    const actions = roleAdmin ? [
-        <DeleteOutlined key="delete" />,
-        <EditOutlined key="edit" />,
-        <EllipsisOutlined key="ellipsis" />,
-    ] : [
-        <EllipsisOutlined key="ellipsis"/>,
-    ];
+    const handleDelete = (linkId: number) => {
+        AnimaisService.deleteById(linkId)
+            .then(() => {
+                toast.success('Animal excluido com sucesso.');
+                window.location.reload();
+            })
+            .catch(() => {
+                toast.error('Falha ao excluir animal.');
+            });       
+    };
+
+    const handleEdit = (animalId: number) => {
+        AnimaisService.findOne(animalId)
+            .then((response) =>{                
+                navigate(`/editaAnimal/${response.data.id}`);
+            })
+            .catch((error) => {
+                console.log('Falha ao carregar o animal. ', error);
+                toast.error('Falha ao carregar o animal.');
+            });
+    };
 
     return(
         <div>
@@ -106,7 +120,17 @@ export function HomePage() {
                                 src={`http://localhost:9000/imganimais/${animais.imagemNome![0]}`}
                             />
                         }
-                        actions={actions}
+                        actions={roleAdmin ? [
+                            <DeleteOutlined key="delete" onClick={() => handleDelete(animais.id!)}/>,
+                            <EditOutlined key="edit" onClick={() => handleEdit(animais.id!)} />,
+                            <Link to={`/animal/${animais.id}`}>
+                                <EllipsisOutlined key="ellipsis" />
+                            </Link>,
+                        ] : [
+                            <Link to={`/animal/${animais.id}`}>
+                                <EllipsisOutlined key="ellipsis" />
+                            </Link>,
+                        ]}
                     >
                         <Meta title={animais.nome} description={animais.especie} />
                     </Card>

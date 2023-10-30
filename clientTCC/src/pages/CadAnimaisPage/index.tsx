@@ -6,7 +6,7 @@ import EntidadeService from "../../services/EntidadeService";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AnimaisService from "../../services/AnimaisService";
-import { UploadOutlined } from '@ant-design/icons';
+import { UploadOutlined } from "@ant-design/icons";
 import { UploadChangeParam, UploadFile } from "antd/es/upload";
 
 export function CadAnimaisPage() {
@@ -21,7 +21,7 @@ export function CadAnimaisPage() {
     especie: "",
     doencas: "",
     imagemNome: "",
-	  conteudoImagem: "",
+    conteudoImagem: "",
     entidade: {} as Entidades,
   });
 
@@ -69,8 +69,9 @@ export function CadAnimaisPage() {
 
   const onFileChangeHandler = (info: UploadChangeParam<UploadFile<any>>) => {
     if (info.fileList) {
-      // Filtrar os objetos UploadFile para obter os objetos File
-      const fileList = info.fileList.filter((file) => !!file.originFileObj).map((file) => file.originFileObj as File);
+      const fileList = info.fileList
+        .filter((file) => !!file.originFileObj)
+        .map((file) => file.originFileObj as File);
       setImagens(fileList);
     }
   };
@@ -83,17 +84,17 @@ export function CadAnimaisPage() {
       imagemNome: imagens.map((imagem) => imagem.name),
       conteudoImagem: imagens.map((imagem) => imagem.type),
     };
-  
+
     const formData = new FormData();
     for (let i = 0; i < imagens.length; i++) {
-      formData.append('imagens', imagens[i]);
+      formData.append("imagens", imagens[i]);
     }
 
     const blob = new Blob([JSON.stringify(animais)], {
-      type: 'application/json'
+      type: "application/json",
     });
-    formData.append('animais', blob);
-    
+    formData.append("animais", blob);
+
     AnimaisService.save(formData)
       .then((response) => {
         toast.success("Animal cadastrado com sucesso! ");
@@ -102,7 +103,10 @@ export function CadAnimaisPage() {
       })
       .catch((error) => {
         if (error.response.data && error.response.data.validationErrors) {
-          console.error("Falha ao salvar o animal. ", error.response.data.validationErrors);
+          console.error(
+            "Falha ao salvar o animal. ",
+            error.response.data.validationErrors
+          );
         } else {
           toast.error("Falha ao salvar o animal.");
         }
@@ -137,15 +141,19 @@ export function CadAnimaisPage() {
                   setForm({ ...form, genero: value });
                 }}
               >
-                <Select.Option value="fem">Fêmea</Select.Option>
-                <Select.Option value="mac">Macho</Select.Option>
+                <Select.Option value="Feminino">Fêmea</Select.Option>
+                <Select.Option value="Masculino">Macho</Select.Option>
               </Select>
             </Form.Item>
             <Form.Item className="col-md-2 col-sm-12">
               <label id="cadText" className="form-label me-2">
                 Idade
               </label>
-              <Input value={form.idade.toString()} name="idade" onChange={onChange} />
+              <Input
+                value={form.idade.toString()}
+                name="idade"
+                onChange={onChange}
+              />
             </Form.Item>
             <Form.Item className="col-md-5 col-sm-12">
               <label id="cadText" className="form-label">
@@ -157,13 +165,21 @@ export function CadAnimaisPage() {
               <label id="cadText" className="form-label">
                 Medicações
               </label>
-              <Input value={form.medicacoes} name="medicacoes" onChange={onChange} />
+              <Input
+                value={form.medicacoes}
+                name="medicacoes"
+                onChange={onChange}
+              />
             </Form.Item>
             <Form.Item className="col-md-5 col-sm-12">
               <label id="cadText" className="form-label">
                 Personalidade
               </label>
-              <Input value={form.personalidade} name="personalidade" onChange={onChange} />
+              <Input
+                value={form.personalidade}
+                name="personalidade"
+                onChange={onChange}
+              />
             </Form.Item>
             <Form.Item className="col-md-5 col-sm-12">
               <label id="cadText" className="form-label">
@@ -187,9 +203,9 @@ export function CadAnimaisPage() {
                   setForm({ ...form, porte: value });
                 }}
               >
-                <Select.Option value="peq">Pequeno</Select.Option>
-                <Select.Option value="med">Médio</Select.Option>
-                <Select.Option value="gra">Grande</Select.Option>
+                <Select.Option value="Pequeno">Pequeno</Select.Option>
+                <Select.Option value="Médio">Médio</Select.Option>
+                <Select.Option value="Grande">Grande</Select.Option>
               </Select>
             </Form.Item>
 
@@ -198,13 +214,18 @@ export function CadAnimaisPage() {
                 Imagens
               </label>
               <Upload
+                action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
                 name="imagens"
+                listType="picture"
+                maxCount={3}
                 multiple
                 onChange={onFileChangeHandler}
               >
-                <Button icon={<UploadOutlined />}>Selecionar Imagens</Button>
+                <Button icon={<UploadOutlined />}>
+                  Selecione no maximo 3 imagens
+                </Button>
               </Upload>
-              <div>
+              {/*<div>
                 {imagens.map((imagem, index) => (
                   <img
                     key={index}
@@ -212,19 +233,18 @@ export function CadAnimaisPage() {
                     src={`http://localhost:9000/imganimais/${imagem.name}`}
                   />
                 ))}
-              </div>
+                </div>*/}
             </Form.Item>
           </div>
-          
 
           <div className="row justify-content-center mt-4">
             <Form.Item className="col-2">
-                <button
-                    type="submit"
-                    className="btn btn-success"
-                    onClick={onClickCadastraAnimais}
-                >
-                    Salvar
+              <button
+                type="submit"
+                className="btn btn-success"
+                onClick={onClickCadastraAnimais}
+              >
+                Salvar
               </button>
             </Form.Item>
           </div>

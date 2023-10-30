@@ -1,3 +1,4 @@
+import { Animais } from "../commons/interfaces";
 import { api } from "../lib/axios";
 
 const save = (formData: FormData) => {
@@ -12,10 +13,30 @@ const findLastTenAnimals = () => {
   return api.get('/animais/lista');
 }
 
+const findOne = ( id: number) => {
+  return api.get(`/animais/${id}`);
+}
+
+const deleteById = (id: number) => {
+  return api.delete(`/animais/${id}`);
+}
+
+const update = (id: number, formData: FormData) => {
+  return api.put(`/animais/upload/${id}`, formData);
+}
+
+const updateSemImg = (id: number, animal: Animais) => {
+  return api.put(`/animais/${id}`, animal);
+}
+
 const AnimaisService = {
   save,
   findAll,
+  findOne,
   findLastTenAnimals,
+  deleteById,
+  update,
+  updateSemImg,
 }
 
 export default AnimaisService;

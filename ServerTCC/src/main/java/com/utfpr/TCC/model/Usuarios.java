@@ -6,6 +6,7 @@ import com.utfpr.TCC.annotation.UniqueUserName;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,14 +28,9 @@ public class Usuarios implements UserDetails {
 	private String username;
 	
 	@NotNull
-	@Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}$")
+	@Size(min = 8, max = 254)
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$")
 	private String password;
-	/*	(?=.*\d)              // deve conter ao menos um dígito
-		(?=.*[a-z])           // deve conter ao menos uma letra minúscula
-		(?=.*[A-Z])           // deve conter ao menos uma letra maiúscula
-		(?=.*[$*&@#])         // deve conter ao menos um caractere especial
-		[0-9a-zA-Z$*&@#]{8,}  // deve conter ao menos 8 dos caracteres mencionados
-	*/
 	
 	@NotNull
 	private String tipoUsuario;

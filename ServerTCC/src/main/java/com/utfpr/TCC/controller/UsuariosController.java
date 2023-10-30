@@ -25,12 +25,6 @@ public class UsuariosController extends CrudController<Usuarios, Usuarios, Long>
 		this.modelMapper = modelMapper;
 	}
 	
-//	@PostMapping
-//	public GenericResponse createUser(@RequestBody @Valid Usuarios usuario) {
-//		usuariosService.save(usuario);
-//		return new GenericResponse("Registro salvo");
-//	}
-	
 	@GetMapping("findByName/{nome}")
 	public ResponseEntity<Usuarios> findEntidadeByName(@PathVariable String nome){
 		Usuarios entity = usuariosService.findByusername(nome);

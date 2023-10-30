@@ -8,19 +8,19 @@ import { ToastContainer, toast } from 'react-toastify';
 
 export function CadAdotantesPage() {
     const [form, setForm] = useState({
-            bairro: '',
-            cidade: '',
-            endereco: '',
-            estado: '',
-            numero_casa: 0,
-            data_nascimento: dayjs(),
-            email: '',
-            nomeCompleto: '',
-            possui_animal: '',
-            profissao: '',
-            quantidade_animais: 0,
-            especie_animais: '',
-            user:{ username: '', password: '', tipoUsuario: 'adotante' },
+        bairro: '',
+        cidade: '',
+        endereco: '',
+        estado: '',
+        numero_casa: 0,
+        data_nascimento: dayjs(),
+        email: '',
+        nomeCompleto: '',
+        possui_animal: '',
+        profissao: '',
+        quantidade_animais: 0,
+        especie_animais: '',
+        user:{ username: '', password: '', tipoUsuario: 'adotante' },
     });
 
     const navigate = useNavigate();

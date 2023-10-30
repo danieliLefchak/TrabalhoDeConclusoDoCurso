@@ -82,9 +82,9 @@ export function CadLinksUteisPage() {
     }
 
     return(
-        <div className="container altura-rem d-flex justify-content-center">
+        <div className="container-fluid d-flex justify-content-center">
             <ToastContainer />
-            <Card id="cardCad" className="mb-3 mt-5">
+            <Card id="cardCadLink" className="mb-3 mt-5">
                 <h2 id="cadText" className="text-center mb-4 mt-2">Cadastro de Links Uteis</h2>
                 <Form layout="horizontal">
                     <h6 id="cadText" className="text-center mb-4 fw-bolder">Informações para cadastro</h6>

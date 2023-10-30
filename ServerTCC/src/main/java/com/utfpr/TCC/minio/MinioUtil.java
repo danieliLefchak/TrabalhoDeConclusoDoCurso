@@ -23,7 +23,6 @@ public class MinioUtil {
     private final MinioClient minioClient;
     private final MinioConfig minioConfig;
 
-    // Upload Files
     @SneakyThrows
     public void putObject(String bucketName, MultipartFile multipartFile, String filename, String fileType) {
         InputStream inputStream = new ByteArrayInputStream(multipartFile.getBytes());
@@ -34,7 +33,6 @@ public class MinioUtil {
                         .build());
     }
 
-    // Get a file object as a stream from the specified bucket
     @SneakyThrows
     public InputStream getObject(String bucketName, String objectName) {
         boolean flag = bucketExists(bucketName);
@@ -53,7 +51,6 @@ public class MinioUtil {
         return null;
     }
 
-    // Check if bucket name exists
     @SneakyThrows
     public boolean bucketExists(String bucketName) {
         boolean found =
@@ -65,7 +62,6 @@ public class MinioUtil {
         return found;
     }
 
-    // Create bucket name
     @SneakyThrows
     public boolean makeBucket(String bucketName) {
         boolean flag = bucketExists(bucketName);
@@ -80,13 +76,11 @@ public class MinioUtil {
         }
     }
 
-    // List all buckets
     @SneakyThrows
     public List<Bucket> listBuckets() {
         return minioClient.listBuckets();
     }
 
-    // List all bucket names
     @SneakyThrows
     public List<String> listBucketNames() {
         List<Bucket> bucketList = listBuckets();
@@ -97,7 +91,6 @@ public class MinioUtil {
         return bucketListName;
     }
 
-    // List all objects from the specified bucket
     @SneakyThrows
     public Iterable<Result<Item>> listObjects(String bucketName) {
         boolean flag = bucketExists(bucketName);
@@ -108,7 +101,6 @@ public class MinioUtil {
         return null;
     }
 
-    // Delete Bucket by its name from the specified bucket
     @SneakyThrows
     public boolean removeBucket(String bucketName) {
         boolean flag = bucketExists(bucketName);
@@ -116,12 +108,10 @@ public class MinioUtil {
             Iterable<Result<Item>> myObjects = listObjects(bucketName);
             for (Result<Item> result : myObjects) {
                 Item item = result.get();
-                //  Delete failed when There are object files in bucket
                 if (item.size() > 0) {
                     return false;
                 }
             }
-            //  Delete bucket when bucket is empty
             minioClient.removeBucket(RemoveBucketArgs.builder().bucket(bucketName).build());
             flag = bucketExists(bucketName);
 
@@ -131,8 +121,7 @@ public class MinioUtil {
         }
         return false;
     }
-
-    // List all object names from the specified bucket
+    
     @SneakyThrows
     public List<String> listObjectNames(String bucketName) {
         List<String> listObjectNames = new ArrayList<>();
@@ -149,7 +138,6 @@ public class MinioUtil {
         return listObjectNames;
     }
 
-    // Delete object from the specified bucket
     @SneakyThrows
     public boolean removeObject(String bucketName, String objectName) {
         boolean flag = bucketExists(bucketName);
@@ -161,7 +149,6 @@ public class MinioUtil {
         return false;
     }
 
-    // Get file path from the specified bucket
     @SneakyThrows
     public String getObjectUrl(String bucketName, String objectName) {
         boolean flag = bucketExists(bucketName);
@@ -178,7 +165,6 @@ public class MinioUtil {
         return url;
     }
 
-    // Get metadata of the object from the specified bucket
     @SneakyThrows
     public StatObjectResponse statObject(String bucketName, String objectName) {
         boolean flag = bucketExists(bucketName);
@@ -191,7 +177,6 @@ public class MinioUtil {
         return null;
     }
 
-    // Get a file object as a stream from the specified bucket （ Breakpoint download )
     @SneakyThrows
     public InputStream getObject(String bucketName, String objectName, long offset, Long length) {
         boolean flag = bucketExists(bucketName);
@@ -212,7 +197,6 @@ public class MinioUtil {
         return null;
     }
 
-    // Delete multiple file objects from the specified bucket
     @SneakyThrows
     public boolean removeObject(String bucketName, List<String> objectNames) {
         boolean flag = bucketExists(bucketName);
@@ -233,7 +217,6 @@ public class MinioUtil {
         return true;
     }
 
-    // Upload InputStream object to the specified bucket
     @SneakyThrows
     public boolean putObject(String bucketName, String objectName, InputStream inputStream, String contentType) {
         boolean flag = bucketExists(bucketName);
