@@ -46,4 +46,14 @@ public class UsuarioServiceImpl extends CrudServiceImpl<Usuarios, Long> implemen
 	public Usuarios findByusername(String nome) {
 		return usuariosRepository.findByusername(nome);
 	}
+	
+	@Override
+	public void delete(Long id) {
+		Usuarios usuario = super.findOne(id);
+		usuario.getUserAuthorities().clear();
+		
+		usuariosRepository.save(usuario);
+		
+		usuariosRepository.deleteById(id);
+	}
 }

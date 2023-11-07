@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,9 +17,7 @@ import com.utfpr.TCC.dto.AnimaisDto;
 import com.utfpr.TCC.model.Animais;
 import com.utfpr.TCC.service.AnimaisService;
 import com.utfpr.TCC.service.CrudService;
-import com.utfpr.TCC.utils.GenericResponse;
 
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
 @RestController
@@ -58,5 +55,15 @@ public class AnimaisController extends CrudController<Animais, AnimaisDto, Long>
 	@GetMapping(value = "lista")
 	public List<Animais> findLastTenAnimals() {
 		return animaisService.findLastTenAnimals();
+	}
+	
+	@GetMapping(value = "listaPorte/{porte}")
+	public List<Animais> findByPorte(@PathVariable String porte) {
+		return animaisService.findByPorte(porte);
+	}
+	
+	@GetMapping(value = "listaEspecie/{especie}")
+	public List<Animais> findByEspecie(@PathVariable String especie) {
+		return animaisService.findByEspecie(especie);
 	}
 }

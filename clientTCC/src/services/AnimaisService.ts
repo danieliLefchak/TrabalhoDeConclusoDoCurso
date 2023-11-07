@@ -29,6 +29,14 @@ const updateSemImg = (id: number, animal: Animais) => {
   return api.put(`/animais/${id}`, animal);
 }
 
+const findByPorte = ( porte: string) => {
+  return api.get(`/animais/listaPorte/${porte}`);
+}
+
+const findByEspecie = ( especie: string) => {
+  return api.get(`/animais/listaEspecie/${especie}`);
+}
+
 const AnimaisService = {
   save,
   findAll,
@@ -37,6 +45,8 @@ const AnimaisService = {
   deleteById,
   update,
   updateSemImg,
+  findByPorte,
+  findByEspecie,
 }
 
 export default AnimaisService;

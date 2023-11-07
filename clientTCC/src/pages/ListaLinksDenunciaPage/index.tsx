@@ -103,7 +103,7 @@ export function ListaLinksDenunciaPage(){
                                     </div>
                                   )}
                             >
-                                <a href={links.link} target="_blank" rel="noopener noreferrer" className="text-decoration-none">{links.descricao}</a>
+                                <a href={links.link} target="_blank" rel="noopener noreferrer" className="text-decoration-none text-black">{links.descricao}</a>
                         </Card>
                     </div>
                 ))}
