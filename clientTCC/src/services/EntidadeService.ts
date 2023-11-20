@@ -1,4 +1,4 @@
-import { Entidades } from "../commons/interfaces";
+import { Entidades, NovaSenha } from "../commons/interfaces";
 import { api } from "../lib/axios";
 
 const findByUser = ( user: string ) => {
@@ -13,12 +13,16 @@ const deleteById = (id: number) => {
     return api.delete(`/entidades/${id}`);
 }
 
-const update = (id: number, entidade: Entidades) => {
-    return api.put(`/entidades/${id}`, entidade);
+const update = (id: number, entidade: Entidades, novaSenha: NovaSenha) => {
+    return api.put(`/entidades/editar/${id}`, {entidade, novaSenha});
 }
 
 const findById = ( id: number) => {
     return api.get(`/entidades/findById/${id}`);
+}
+
+const findByNomeFant = ( nome: string) => {
+    return api.get(`/entidades/findByNomeFant/${nome}`);
 }
 
 const EntidadeService = {
@@ -27,6 +31,7 @@ const EntidadeService = {
     deleteById,
     update,
     findById,
+    findByNomeFant,
 }
 
 export default EntidadeService;

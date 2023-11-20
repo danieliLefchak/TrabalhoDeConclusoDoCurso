@@ -34,6 +34,7 @@ public class PossiveisAdotantes{
 	@NotNull
 	private LocalDate data_nascimento;
 	
+	@NotNull
 	@Pattern(regexp = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@" 
 	        + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$")
 	private String email;
@@ -60,10 +61,9 @@ public class PossiveisAdotantes{
 	private int quantidade_animais;
 	
 	//se possuir animais quais são as especies deles
-	@NotNull
 	private String especie_animais;
 	
-	//se funcionar o filtro colocar na tabela
+	//para a tabela tabela de interessado
 	private LocalDate dataInteresse;
 	
 	@NotNull

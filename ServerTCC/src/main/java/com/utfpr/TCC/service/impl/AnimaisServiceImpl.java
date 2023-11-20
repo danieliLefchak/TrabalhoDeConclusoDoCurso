@@ -119,6 +119,8 @@ public class AnimaisServiceImpl extends CrudServiceImpl<Animais, Long> implement
 	public Animais saveWithFile(Animais entity, List<MultipartFile> files) {
 		if (files != null && !files.isEmpty()) {
 	        List<FileResponse> fileResponses = new ArrayList<>();
+	        String especieLower = entity.getEspecie().toLowerCase();
+	        String porteLower = entity.getPorte().toLowerCase();
 
 	        for (MultipartFile file : files) {
 	            String fileType = FileTypeUtils.getFileType(file);
@@ -138,6 +140,8 @@ public class AnimaisServiceImpl extends CrudServiceImpl<Animais, Long> implement
 	        
 	        LocalDate dataCad = LocalDate.now();
 	        
+	        entity.setEspecie(especieLower);
+	        entity.setPorte(porteLower);
 	        entity.setDataCadastro(dataCad);
 	        entity.setImagemNome(imagemNomes);
 	        entity.setConteudoImagem(conteudoImagens);

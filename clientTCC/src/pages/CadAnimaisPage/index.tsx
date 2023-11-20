@@ -25,6 +25,14 @@ export function CadAnimaisPage() {
     entidade: {} as Entidades,
   });
 
+  type FieldType = {
+    genero: "",
+    idade: "",
+    nome: "",
+    porte: "",
+    especie: "",
+  }
+
   const navigate = useNavigate();
   var nomeStorage: any = localStorage.getItem("user");
   var nome = JSON.parse(nomeStorage).toString();
@@ -120,21 +128,23 @@ export function CadAnimaisPage() {
         <h2 id="cadText" className="text-center mb-5 mt-2">
           Cadastro de Animais
         </h2>
-        <Form layout="horizontal">
+        <Form layout="vertical">
           <h6 id="cadText" className="text-center mb-5 fw-bolder">
             Informações para cadastro
           </h6>
           <div className="row justify-content-start ms-5">
-            <Form.Item className="col-md-5 col-sm-12">
-              <label id="cadText" className="form-label">
-                Nome
-              </label>
+            <Form.Item<FieldType>
+                        label="Nome"
+                        name="nome"
+                        rules={[{ required: true, message: 'O campo nome é obrigatório!' }]} 
+                    className="col-md-5 col-sm-12">
               <Input value={form.nome} name="nome" onChange={onChange} />
             </Form.Item>
-            <Form.Item className="col-md-3 col-sm-12">
-              <label id="cadText" className="form-label">
-                Genero
-              </label>
+            <Form.Item<FieldType>
+                        label="Genero"
+                        name="genero"
+                        rules={[{ required: true, message: 'O campo genero é obrigatório!' }]} 
+                    className="col-md-3 col-sm-12">
               <Select
                 value={form.genero}
                 onChange={(value) => {
@@ -145,10 +155,11 @@ export function CadAnimaisPage() {
                 <Select.Option value="Masculino">Macho</Select.Option>
               </Select>
             </Form.Item>
-            <Form.Item className="col-md-2 col-sm-12">
-              <label id="cadText" className="form-label me-2">
-                Idade
-              </label>
+            <Form.Item<FieldType>
+                        label="Idade"
+                        name="idade"
+                        rules={[{ required: true, message: 'O campo idade é obrigatório!' }]} 
+                    className="col-md-2 col-sm-12">
               <Input
                 value={form.idade.toString()}
                 name="idade"
@@ -156,13 +167,13 @@ export function CadAnimaisPage() {
               />
             </Form.Item>
             <Form.Item className="col-md-5 col-sm-12">
-              <label id="cadText" className="form-label">
+              <label className="form-label">
                 Doença
               </label>
               <Input value={form.doencas} name="doencas" onChange={onChange} />
             </Form.Item>
             <Form.Item className="col-md-5 col-sm-12">
-              <label id="cadText" className="form-label">
+              <label className="form-label">
                 Medicações
               </label>
               <Input
@@ -172,7 +183,7 @@ export function CadAnimaisPage() {
               />
             </Form.Item>
             <Form.Item className="col-md-5 col-sm-12">
-              <label id="cadText" className="form-label">
+              <label className="form-label">
                 Personalidade
               </label>
               <Input
@@ -181,22 +192,24 @@ export function CadAnimaisPage() {
                 onChange={onChange}
               />
             </Form.Item>
-            <Form.Item className="col-md-5 col-sm-12">
-              <label id="cadText" className="form-label">
-                Espécie
-              </label>
+            <Form.Item<FieldType>
+                        label="Espécie"
+                        name="especie"
+                        rules={[{ required: true, message: 'O campo espécie é obrigatório!' }]} 
+                    className="col-md-5 col-sm-12">
               <Input value={form.especie} name="especie" onChange={onChange} />
             </Form.Item>
             <Form.Item className="col-md-5 col-sm-12">
-              <label id="cadText" className="form-label">
+              <label className="form-label">
                 Raça
               </label>
               <Input value={form.raca} name="raca" onChange={onChange} />
             </Form.Item>
-            <Form.Item className="col-md-5 col-sm-12">
-              <label id="cadText" className="form-label">
-                Porte
-              </label>
+            <Form.Item<FieldType>
+                        label="Porte"
+                        name="porte"
+                        rules={[{ required: true, message: 'O campo porte é obrigatório!' }]} 
+                    className="col-md-5 col-sm-12">
               <Select
                 value={form.porte}
                 onChange={(value) => {
@@ -210,7 +223,7 @@ export function CadAnimaisPage() {
             </Form.Item>
 
             <Form.Item className="col-md-5 col-sm-12">
-              <label id="cadText" className="form-label me-2">
+              <label className="form-label me-2">
                 Imagens
               </label>
               <Upload
@@ -225,15 +238,6 @@ export function CadAnimaisPage() {
                   Selecione no maximo 3 imagens
                 </Button>
               </Upload>
-              {/*<div>
-                {imagens.map((imagem, index) => (
-                  <img
-                    key={index}
-                    style={{ width: '100px', height: '100px', marginRight: '10px' }}
-                    src={`http://localhost:9000/imganimais/${imagem.name}`}
-                  />
-                ))}
-                </div>*/}
             </Form.Item>
           </div>
 

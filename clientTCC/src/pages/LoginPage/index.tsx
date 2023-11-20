@@ -12,6 +12,11 @@ export function LoginPage(){
         password: "",
       });
 
+      type FieldType = {
+        username: "",
+        password: "",
+      }
+
       const navigate = useNavigate();
     
       const onChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -39,9 +44,13 @@ export function LoginPage(){
             window.location.reload();
           })
           .catch((errorResponse) => {
-            toast("Erro ao realizar login.");
+            toast.error("Erro ao realizar login.");
             console.log("Erro ao realizar login. ", errorResponse);
           });
+      };
+
+      const onFinishFailed = (errorInfo: any) => {
+        console.log('Failed:', errorInfo);
       };
 
     return(
@@ -49,19 +58,25 @@ export function LoginPage(){
           <ToastContainer/>
             <Card id="cardCadLogin">
                 <h2 id="cadText" className="text-center mb-4 mt-2">Login</h2>
-                <Form layout="horizontal">
+                <Form layout="vertical" onFinishFailed={onFinishFailed}>
 
                     <h6 id="cadText" className="text-center mb-5 fw-bolder">Informações para login</h6>
                     <div className="row justify-content-center">
-                        <Form.Item className="col-6">
-                            <label id="cadText" className="form-label">Nome de usuário</label>
+                        <Form.Item<FieldType>
+                                  label="Nome de usuário"
+                                  name="username"
+                                  rules={[{ required: true, message: 'O campo nome de usuário é obrigatório!' }]} 
+                                  className="col-6">
                             <Input onChange={onChange} value={form.username} name="username"/>
                         </Form.Item>
                     </div>
                     <div className="row justify-content-center">
-                        <Form.Item className="col-6">
-                            <label id="cadText" className="form-label">Senha</label>
-                            <Input type="password" onChange={onChange} value={form.password} name="password"/>
+                        <Form.Item<FieldType>
+                                  label="Senha"
+                                  name="password"
+                                  rules={[{ required: true, message: 'O campo nome de senha é obrigatório!' }]} 
+                                  className="col-6">
+                            <Input.Password type="password" onChange={onChange} value={form.password} name="password"/>
                         </Form.Item>
                     </div>
                                     
@@ -71,8 +86,7 @@ export function LoginPage(){
                                     className="btn btn-success"
                                     onClick={onClickLogin}>
                                 
-                                
-                                Salvar
+                                Entrar
                             </button>
                         </Form.Item>
                     </div>               

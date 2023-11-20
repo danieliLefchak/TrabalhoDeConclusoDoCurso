@@ -21,6 +21,7 @@ import { CadEntidadePage } from "../../pages/CadEntidadePage";
 import UsuarioService from "../../services/UsuarioService";
 import { EditaAdotantePage } from "../../pages/EditarAdotantePage";
 import { EditaEntidadePage } from "../../pages/EditaEntidadePage";
+import { PerfilPublicoEntidades } from "../../pages/PerfilPublicoEntidades";
 
 export function AuthenticatedRoutes() {
     const [roleAdmin, setRoleAdmin] = useState(false);
@@ -91,6 +92,7 @@ export function AuthenticatedRoutes() {
                 <Route path="/listaPrimeiroAnimal" element={<ListaPrimeiroAnimalPage />} />
                 <Route path="/animal/:id" element={<DetalhesAnimaisPage />} />
                 <Route path="/CadEntidadePage" element={<CadEntidadePage />} />
+                <Route path="/pfPublic/:nome" element={<PerfilPublicoEntidades />} />
             </Routes>
             <Footer />
         </div>

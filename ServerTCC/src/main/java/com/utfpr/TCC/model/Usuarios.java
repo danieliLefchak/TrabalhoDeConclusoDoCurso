@@ -23,12 +23,12 @@ public class Usuarios implements UserDetails {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	@NotNull
-	@UniqueUserName
+	@NotNull(message = "O campo 'Nome de usuário' não pode ser nulo.")
+	@UniqueUserName(message = "Nome de usuário deve ser único.")
 	private String username;
 	
-	@NotNull
-	@Size(min = 8, max = 254)
+	@NotNull(message = "O campo 'Senha' não pode ser nulo.")
+	@Size(min = 8)
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$")
 	private String password;
 	

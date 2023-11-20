@@ -15,6 +15,12 @@ export function CadLinksUteisPage() {
         categoria: '',
         entidade: {} as Entidades,
     });
+
+    type FieldType = {
+        link: '',
+        titulo: '',
+        categoria: '',
+    }
     
     const navigate = useNavigate();
     var nomeStorage: any = localStorage.getItem("user");
@@ -65,7 +71,7 @@ export function CadLinksUteisPage() {
 
         LinksUteisService.save(links)
             .then((response) => {
-                console.log("Usuário link criado com sucesso!  ", response);
+                console.log("Link criado com sucesso!  ", response);
                 if(links.categoria === "Primeiro animal"){
                     navigate("/listaPrimeiroAnimal");
                 } else if(links.categoria === "Cuidados com animais"){
@@ -86,23 +92,32 @@ export function CadLinksUteisPage() {
             <ToastContainer />
             <Card id="cardCadLink" className="mb-3 mt-5">
                 <h2 id="cadText" className="text-center mb-4 mt-2">Cadastro de Links Uteis</h2>
-                <Form layout="horizontal">
+                <Form layout="vertical">
                     <h6 id="cadText" className="text-center mb-4 fw-bolder">Informações para cadastro</h6>
                     <div className="row justify-content-start ms-5"> 
-                        <Form.Item className="col-md-5 col-sm-12">
-                            <label id="cadText" className="form-label">Link</label>
+                        <Form.Item<FieldType>
+                                    label="Link"
+                                    name="link"
+                                    rules={[{ required: true, message: 'O campo link é obrigatório!' }]} 
+                                className="col-md-5 col-sm-12">
                             <Input value={form.link} name="link" onChange={onChange} />
                         </Form.Item>
-                        <Form.Item className="col-md-5 col-sm-12">
-                            <label id="cadText" className="form-label">Título</label>
+                        <Form.Item<FieldType>
+                                    label="Título"
+                                    name="titulo"
+                                    rules={[{ required: true, message: 'O campo título é obrigatório!' }]} 
+                                className="col-md-5 col-sm-12">
                             <Input value={form.titulo} name="titulo" onChange={onChange} />
                         </Form.Item>
                         <Form.Item className="col-md-5 col-sm-12">
-                            <label id="cadText" className="form-label">Descrição</label>
+                            <label className="form-label">Descrição</label>
                             <Input value={form.descricao} name="descricao" onChange={onChange} />
                         </Form.Item>
-                        <Form.Item className="col-md-5 col-sm-12">
-                            <label id="cadText" className="form-label">Categoria</label>
+                        <Form.Item<FieldType>
+                                    label="Categoria"
+                                    name="categoria"
+                                    rules={[{ required: true, message: 'O campo categoria é obrigatório!' }]} 
+                                className="col-md-5 col-sm-12">
                             <Select value={form.categoria} onChange={(value) => {setForm({ ...form, categoria: value });}}>
 
                                 <Select.Option value="Primeiro animal">Primeiro animal</Select.Option>

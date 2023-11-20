@@ -83,4 +83,9 @@ public class EntidadeServiceImpl extends CrudServiceImpl<Entidades, Long> implem
 	    	entidadesRepository.deleteById(id);
 	    }
 	}
+
+	@Override
+	public Entidades findByNomeFant(String nome) {
+		return entidadesRepository.findByNomeFant(nome);
+	}
 }

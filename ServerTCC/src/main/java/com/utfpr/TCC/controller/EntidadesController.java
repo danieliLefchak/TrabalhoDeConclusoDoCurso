@@ -3,6 +3,7 @@ package com.utfpr.TCC.controller;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.utfpr.TCC.dto.EntidadeSenhaDto;
 import com.utfpr.TCC.dto.EntidadesDto;
 import com.utfpr.TCC.model.Entidades;
 import com.utfpr.TCC.model.Usuarios;
+import com.utfpr.TCC.model.NovaSenha;
 import com.utfpr.TCC.service.CrudService;
 import com.utfpr.TCC.service.EntidadeService;
 import com.utfpr.TCC.service.UsuariosService;
@@ -28,12 +31,14 @@ public class EntidadesController extends CrudController<Entidades, EntidadesDto,
 	private final EntidadeService entidadeService;
 	private final UsuariosService usuario;
 	private ModelMapper modelMapper;
+	BCryptPasswordEncoder passwordEncoder;
 	
 	public EntidadesController(EntidadeService entidadeService, ModelMapper modelMapper, UsuariosService usuario) {
 		super(Entidades.class, EntidadesDto.class);
 		this.entidadeService = entidadeService;
 		this.modelMapper = modelMapper;
 		this.usuario = usuario;
+		passwordEncoder = new BCryptPasswordEncoder();
 	}
 
 	@Override
@@ -78,16 +83,17 @@ public class EntidadesController extends CrudController<Entidades, EntidadesDto,
 		return new GenericResponse("Registro salvo com sucesso");
 	}
 	
-	@Override
-	@PutMapping("{id}")
-	public GenericResponse update(@RequestBody @Valid Entidades entidade, @PathVariable Long id) {
+	@PutMapping("editar/{id}")
+	public GenericResponse update(@RequestBody @Valid EntidadeSenhaDto entidade, @PathVariable Long id) {
 		try {
 			Entidades ent = entidadeService.findOne(id);
 			
 			if(ent != null) {
-				Usuarios user = entidade.getUser();
+				Usuarios user = entidade.getEntidade().getUser();
+				
+				user.setPassword(entidade.getNovaSenha().getNovaSenha());
 				usuario.save(user);
-				entidadeService.save(entidade);
+				entidadeService.save(entidade.getEntidade());
 				return new GenericResponse("Registro atualizado com sucesso");
 			} else {
 				return new GenericResponse("Registro inexistente");
@@ -103,6 +109,17 @@ public class EntidadesController extends CrudController<Entidades, EntidadesDto,
 		
 		if(entity != null) {
 			return ResponseEntity.ok(entidadeService.findOne(id));
+		} else {
+			return ResponseEntity.noContent().build();
+		}
+	}
+	
+	@GetMapping("findByNomeFant/{nome}")
+	public ResponseEntity<Entidades> findByNomeFant(@PathVariable String nome){
+		Entidades entity = entidadeService.findByNomeFant(nome);
+		
+		if(entity != null) {
+			return ResponseEntity.ok(entidadeService.findByNomeFant(nome));
 		} else {
 			return ResponseEntity.noContent().build();
 		}

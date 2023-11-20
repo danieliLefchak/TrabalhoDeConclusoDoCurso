@@ -10,6 +10,7 @@ import { DetalhesAnimaisPage } from "../../pages/DetalhesAnimaisPage";
 import { ListaCuidadosAnimaisPage } from "../../pages/ListaCuidadosAnimaisPage";
 import { ListaLinksDenunciaPage } from "../../pages/ListaLinksDenunciaPage";
 import { ListaPrimeiroAnimalPage } from "../../pages/ListaPrimeiroAnimalPage";
+import { PerfilPublicoEntidades } from "../../pages/PerfilPublicoEntidades";
 
 export function SignRoutes() {
     return (
@@ -26,6 +27,7 @@ export function SignRoutes() {
                 <Route path="/listaDenuncias" element={<ListaLinksDenunciaPage />} />
                 <Route path="/listaPrimeiroAnimal" element={<ListaPrimeiroAnimalPage />} />
                 <Route path="/animal/:id" element={<DetalhesAnimaisPage />} />
+                <Route path="/pfPublic/:nome" element={<PerfilPublicoEntidades />} />
 
                 <Route path="*" element={<LoginPage />} />
             </Routes>

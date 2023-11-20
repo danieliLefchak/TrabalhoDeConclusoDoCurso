@@ -8,4 +8,5 @@ import com.utfpr.TCC.model.Usuarios;
 public interface EntidadesRepository extends JpaRepository<Entidades, Long>{	
 	Entidades findByCnpj(String cnpj);
 	Entidades findByUser(Usuarios usuario);
+	Entidades findByNomeFant(String nome);
 }

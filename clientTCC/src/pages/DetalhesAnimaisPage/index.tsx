@@ -99,8 +99,6 @@ export function DetalhesAnimaisPage(){
             cancelado: false,
         }
 
-        console.log("INTERESSADOS: ", interessado);
-
         InteressadosService.save(interessado)
             .then((response) => {
                 toast.success("Cadastrado com sucesso! ");
@@ -119,6 +117,7 @@ export function DetalhesAnimaisPage(){
 
     return (
         <div className="container-fluid">
+        <ToastContainer/>
         <h1 className="text-center mb-5 mt-3">Detalhes do Animal</h1>
         <div className="row">
                 <div className="col-lg-6 col-md-12 col-sm-12 col-xs-12">
@@ -154,6 +153,7 @@ export function DetalhesAnimaisPage(){
                     <p>Quais doenças possui? {animal.doencas}</p>
                     <p>De quias medicações faz uso? {animal.medicacoes}</p>
                 </div>
+                <Link to={`/pfPublic/${animal.entidade.nomeFant}`} className="text-decoration-none fst-italic text-end mt-2 mb-4 text-secondary">Clique para ver informações sobre onde este animal esta.</Link>
             </div>
             {isUser || !isAdmin ? <div className="row justify-content-center mt-3">
                 <button type="submit" 
@@ -171,6 +171,7 @@ export function DetalhesAnimaisPage(){
                         {encontrado ? (
                         <div>
                             <h5 className="fw-bold mb-4">Informe a data e horário desejado para visitar o animalzinho:</h5>
+                            <p>Os horários de atendimento informados pela entidade são das <span className="fw-bold">{animal.entidade.inicio_atendimento}</span> até as <span className="fw-bold">{animal.entidade.fim_atendimento}</span>.</p>
                             <div className="mb-3">
                                 <label className="fw-bold me-2">Data da visita:</label>
                                 <DatePicker value={modalValue.data_visita} name="data_visita" onChange={(date) => {
@@ -188,24 +189,27 @@ export function DetalhesAnimaisPage(){
                                         }
                                     }}/>
                             </div>
+                            <div>
+                                <p className="text-format">** No dia da visita, deverão ser levados documentos como CPF, RG e Comprovante de Residência.</p>
+                            </div>
                             <div className="row justify-content-center">
-                                <button className="btn btn-success col-2 mt-4" onClick={onClickCadastroInteressado}>Salvar</button>
-                                <button className="btn btn-danger col-2 mt-4 ms-3" onClick={() => setModalVisible(false)}>Fechar</button>
+                                <button className="btn btn-success col-2 mt-3" onClick={onClickCadastroInteressado}>Salvar</button>
+                                <button className="btn btn-danger col-2 mt-3 ms-3" onClick={() => setModalVisible(false)}>Fechar</button>
                             </div>
                         </div>
                         ) : (
                             <div>
                                 <h5 className="fw-bold mb-4">Para realizar esta ação, faça cadastro como usuário ou faça login!</h5>
-                                <div className="text-center">
-                                    <p>Para conseguir acessar está função faça <Link to="/login" className="text-decoration-none text-success fw-bold">
+                                <div className="text-center fs-5">
+                                    <p>Para conseguir demosntrar interesse nesse animalzinho vá para <Link to="/login" className="text-decoration-none text-success fw-bold">
                                     Login
-                                    </Link> ou faça um <Link to="/CadAdotantePage" className="text-decoration-none text-success fw-bold">
+                                    </Link> se já tem uma conta ou caso ainda não tenha conta faça um <Link to="/CadAdotantePage" className="text-decoration-none text-success fw-bold">
                                     Cadastro como adotante
                                     </Link> e agende uma data e um horário para visitar este animalzinho 
                                     no estabelecimento ou lar em que ele se encontra.</p>
                                 </div>
-                                <div className="row justify-content-center">
-                                    <button className="btn btn-success mt-4 col-2" onClick={() => setModalVisible(false)}>Fechar</button>
+                                <div className="row justify-content-center mt-5">
+                                    <button className="btn btn-success col-2" onClick={() => setModalVisible(false)}>Fechar</button>
                                 </div>
                             </div>
                         )}

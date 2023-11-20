@@ -7,9 +7,10 @@ import Meta from "antd/es/card/Meta";
 import { ToastContainer, toast } from "react-toastify";
 import UsuarioService from "../../services/UsuarioService";
 import { Link, useNavigate } from 'react-router-dom';
+import SideBarFiltro from "../../components/SideBarFiltro";
 
 export function ListaAnimaisPage(){
-    const [data, setData] = useState([]);
+    const [data, setData] = useState<Animais[]>([]);
     const navigate = useNavigate();
     const [roleAdmin, setRoleAdmin] = useState(false);
 
@@ -81,10 +82,31 @@ export function ListaAnimaisPage(){
             });
     };
 
+    const handleFilterChange = (filter: string | null, term: string) => {
+        if (filter === "especie") {
+          AnimaisService.findByEspecie(term)
+            .then((response) => {
+              setData(response.data);
+            })
+            .catch((error) => {
+              toast.error('Falha ao filtrar por espécie.');
+            });
+        } else if (filter === "porte") {
+          AnimaisService.findByPorte(term)
+            .then((response) => {
+              setData(response.data);
+            })
+            .catch((error) => {
+              toast.error('Falha ao filtrar por porte.');
+            });
+        }
+    };
+
     return(
         <div className="container-fluid">
             <ToastContainer />
             <h1 className="text-center titulo mt-3">Animais para adoção</h1>
+            <SideBarFiltro onFilterChange={handleFilterChange} />
             <div className="row row-cols-1 row-cols-md-4 g-4 mb-2 mt-2 ms-5">
                 {data.map((animais: Animais) => (
                     <Card

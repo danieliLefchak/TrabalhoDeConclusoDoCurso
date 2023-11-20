@@ -5,6 +5,11 @@ export interface UserLogin {
 	tipoUsuario?: string;
 }
 
+export interface NovaSenha {
+    novaSenha: string;
+	confirmarSenha: string;
+}
+
 export interface Entidades {
     id?: number;
 	nomeFant: String;

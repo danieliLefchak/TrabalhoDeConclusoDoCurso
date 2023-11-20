@@ -25,15 +25,6 @@ import com.utfpr.TCC.service.AuthService;
 
 import lombok.SneakyThrows;
 
-
-//https://blog.algaworks.com/spring-security/
-//CHAVE DE PESQUISA YT: how to configure spring security when you have two types of users in an application
-//https://www.youtube.com/watch?v=PczgM2L3w60
-//https://www.youtube.com/watch?v=-ArErL6KyFw
-//https://www.youtube.com/watch?v=sYGTdvq-CP0
-//https://www.youtube.com/watch?v=OP1l22rG0U8
-//https://www.youtube.com/watch?v=S7t-Un4GR-g
-
 @EnableWebSecurity
 @Configuration
 public class WebSecurity {
@@ -69,6 +60,8 @@ public class WebSecurity {
 				.requestMatchers(antMatcher(HttpMethod.POST, "/usuarios/**")).permitAll()
 				.requestMatchers(antMatcher(HttpMethod.GET, "/animais/**")).permitAll()
 				.requestMatchers(antMatcher(HttpMethod.GET, "/linksUteis/**")).permitAll()
+				.requestMatchers(antMatcher(HttpMethod.GET, "/entidades/findByNomeFant/**")).permitAll()
+				.requestMatchers(antMatcher(HttpMethod.GET, "/usuarios/findByName/**")).permitAll()
 				
 				.requestMatchers(antMatcher("/entidades/findEntidadeByUser/**")).hasAnyRole("ADMIN")
 				.requestMatchers(antMatcher(HttpMethod.PUT, "/entidades/**")).hasAnyRole("ADMIN")
@@ -84,7 +77,7 @@ public class WebSecurity {
 				.requestMatchers(antMatcher(HttpMethod.PUT, "/linksUteis/**")).hasAnyRole("ADMIN")
 				.requestMatchers(antMatcher(HttpMethod.POST, "/linksUteis/**")).hasAnyRole("ADMIN")
 				
-				.requestMatchers(antMatcher(HttpMethod.GET, "/usuarios/findByName/**")).hasAnyRole("ADMIN", "USER")
+				//.requestMatchers(antMatcher(HttpMethod.GET, "/usuarios/findByName/**")).hasAnyRole("ADMIN", "USER")
 				
 				.requestMatchers(antMatcher(HttpMethod.POST, "/interessados/**")).hasAnyRole("USER")
 				.requestMatchers(antMatcher(HttpMethod.PUT, "/interessados/**")).hasAnyRole("ADMIN")

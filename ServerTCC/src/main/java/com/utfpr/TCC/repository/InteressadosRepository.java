@@ -2,6 +2,7 @@ package com.utfpr.TCC.repository;
 
 import java.util.List;
 
+import com.utfpr.TCC.model.Entidades;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.utfpr.TCC.model.Animais;
