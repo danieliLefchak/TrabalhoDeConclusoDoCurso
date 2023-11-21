@@ -31,14 +31,12 @@ public class EntidadesController extends CrudController<Entidades, EntidadesDto,
 	private final EntidadeService entidadeService;
 	private final UsuariosService usuario;
 	private ModelMapper modelMapper;
-	BCryptPasswordEncoder passwordEncoder;
 	
 	public EntidadesController(EntidadeService entidadeService, ModelMapper modelMapper, UsuariosService usuario) {
 		super(Entidades.class, EntidadesDto.class);
 		this.entidadeService = entidadeService;
 		this.modelMapper = modelMapper;
 		this.usuario = usuario;
-		passwordEncoder = new BCryptPasswordEncoder();
 	}
 
 	@Override

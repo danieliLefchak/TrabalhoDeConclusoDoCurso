@@ -1,8 +1,8 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import { PossiveisAdotantes } from "../../commons/interfaces";
-import { DatePicker, Form, Input, Select } from "antd";
+import { NovaSenha, PossiveisAdotantes } from "../../commons/interfaces";
+import { Button, DatePicker, Form, Input, Modal, Select } from "antd";
 import dayjs from "dayjs";
 import AdotantesService from "../../services/AdotantesService";
 
@@ -25,6 +25,26 @@ export function EditaAdotantePage() {
     especie_animais: "",
     user: { id: undefined, username: "", password: "", tipoUsuario: "adotante" },
   });
+
+  const [modalValue, setModalValue] = useState({
+    novaSenha: '',
+    confirmarSenha: '',
+  });
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const [nvSenError, setNvSenError] = useState("");
+  const isPasswordValid = (password: string) => {
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    return passwordRegex.test(password);
+  };  
+
+  const showModal = () => {
+    setModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setModalVisible(false);
+  };
 
   useEffect(() => {
     if (id) {
@@ -66,6 +86,27 @@ export function EditaAdotantePage() {
     });
   };
 
+  const onModalValueChange = (field: string, value: string) => {
+    setModalValue((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+
+    if (field === "novaSenha" || field === "confirmarSenha") {
+      const isValid = isPasswordValid(value);
+      if(!isValid){
+        setNvSenError(isValid ? "" : "Senha inválida! Deve conter 8 caracteres com letras maiúsculas, minúsculas e números.");
+      } else {
+        if (modalValue.novaSenha !== modalValue.confirmarSenha) {
+          setNvSenError("As senhas não coincidem");
+        } else {
+          setNvSenError("");
+        }
+      }
+      
+    }
+  };
+
   const onUserFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = event.target;
     setAdotante((previousForm) => ({
@@ -77,6 +118,18 @@ export function EditaAdotantePage() {
     }));
   };
 
+  const handleOk = () => {
+    if(modalValue.novaSenha === modalValue.confirmarSenha){
+      const senhas: NovaSenha = {
+        novaSenha: modalValue.novaSenha,
+        confirmarSenha: modalValue.confirmarSenha,
+      }
+  
+      setModalValue(senhas);
+      setModalVisible(false);
+    }
+  };
+
   const onClickEditaAdotante = () => {
     const adotantes: PossiveisAdotantes = {
       ...adotante,
@@ -86,7 +139,7 @@ export function EditaAdotantePage() {
       user: adotante.user,
     };
 
-    AdotantesService.update(parseInt(id!), adotantes)
+    AdotantesService.update(parseInt(id!), adotantes, modalValue)
       .then(() => {
         toast.success("Perfil editado com sucesso!");
         navigate('/MeusDados');
@@ -117,16 +170,10 @@ export function EditaAdotantePage() {
                 onChange={onUserFieldChange}
               />
             </Form.Item>
-            <Form.Item className="col-md-5 col-sm-12">
-              <label id="cadText" className="form-label">
-                Senha
-              </label>
-              <Input
-                type="password"
-                value={adotante.user.password}
-                name="password"
-                onChange={onUserFieldChange}
-              />
+            <Form.Item className="text-center col-md-5 col-sm-12">
+              <Button className="text-secondary fw-bold" type="link" onClick={showModal}>
+                Clique aqui para alterar sua senha
+              </Button>
             </Form.Item>
           </div>
 
@@ -260,6 +307,22 @@ export function EditaAdotantePage() {
           </button>
         </Form.Item>
       </div>
+
+      <Modal
+        title="Alterar Senha"
+        open={modalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <Form layout="vertical">
+          <Form.Item label="Nova Senha" help={nvSenError} validateStatus={nvSenError ? "error" : ""}>
+            <Input.Password value={modalValue.novaSenha} onChange={(e) => onModalValueChange('novaSenha', e.target.value)}/>
+          </Form.Item>
+          <Form.Item label="Confirmar senha" help={nvSenError} validateStatus={nvSenError ? "error" : ""}>
+            <Input.Password value={modalValue.confirmarSenha} onChange={(e) => onModalValueChange('confirmarSenha', e.target.value)}/>
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
 }

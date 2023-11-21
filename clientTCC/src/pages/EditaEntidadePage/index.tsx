@@ -127,12 +127,10 @@ export function EditaEntidadePage() {
   
       setModalValue(senhas);
       setModalVisible(false);
-    } else {
-
     }
   };
 
-  const onClickEditaLinks = () => {
+  const onClickEditaEntidades = () => {
     const entidades: Entidades = {
         ...entidade,
         user: entidade.user,
@@ -298,7 +296,7 @@ export function EditaEntidadePage() {
           <button
             type="submit"
             className="btn btn-success"
-            onClick={onClickEditaLinks}
+            onClick={onClickEditaEntidades}
           >
             Salvar
           </button>

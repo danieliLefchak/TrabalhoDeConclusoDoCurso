@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.utfpr.TCC.dto.AdotantesSenhaDto;
 import com.utfpr.TCC.dto.PossiveisAdotatesDto;
 import com.utfpr.TCC.model.PossiveisAdotantes;
 import com.utfpr.TCC.model.Usuarios;
@@ -56,17 +57,17 @@ public class PossiveisAdotantesController extends CrudController<PossiveisAdotan
 		return new GenericResponse("Registro salvo com sucesso");
 	}
 	
-	@Override
-	@PutMapping("{id}")
-	public GenericResponse update(@RequestBody @Valid PossiveisAdotantes adotante, @PathVariable Long id) {
+	@PutMapping("editar/{id}")
+	public GenericResponse update(@RequestBody @Valid AdotantesSenhaDto adotante, @PathVariable Long id) {
 		try {
 			PossiveisAdotantes ent = possiveisAdotantesService.findOne(id);
 			
 			if(ent != null) {
-				Usuarios user = adotante.getUser();
+				Usuarios user = adotante.getAdotante().getUser();
 				
+				user.setPassword(adotante.getNovaSenha().getNovaSenha());
 				usuario.save(user);
-				possiveisAdotantesService.save(adotante);
+				possiveisAdotantesService.save(adotante.getAdotante());
 				return new GenericResponse("Registro atualizado com sucesso");
 			} else {
 				return new GenericResponse("Registro inexistente");

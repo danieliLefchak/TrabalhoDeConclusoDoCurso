@@ -1,4 +1,4 @@
-import { PossiveisAdotantes } from "../commons/interfaces";
+import { NovaSenha, PossiveisAdotantes } from "../commons/interfaces";
 import { api } from "../lib/axios";
 
 const findOne = ( id: number) => {
@@ -17,8 +17,8 @@ const deleteById = (id: number) => {
     return api.delete(`/possiveisAdotantes/${id}`);
 }
 
-const update = (id: number, adotante: PossiveisAdotantes) => {
-    return api.put(`/possiveisAdotantes/${id}`, adotante);
+const update = (id: number, adotante: PossiveisAdotantes, novaSenha: NovaSenha) => {
+    return api.put(`/possiveisAdotantes/editar/${id}`, {adotante, novaSenha});
 }
 
 const findById = ( id: number) => {
