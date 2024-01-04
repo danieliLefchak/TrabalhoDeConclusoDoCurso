@@ -102,22 +102,22 @@ export function CadAdotantesPage() {
     UsuarioService.findByName(adotante.user.username)
         .then((responseName) => {
             nomeEncontrado = responseName.data.username;
-        });
 
-    if (nomeEncontrado === adotante.user.username) {
-      toast.warning("Nome de usuário deve ser único");
-    } else if (nomeEncontrado === "") {
-      AuthService.cadastroAdotante(adotante)
-        .then((response) => {
-          console.log("Usuário adotante criado com sucesso!  ", response);
-          toast.success("Usuário adotante criado com sucesso!  ");
-          navigate("/login");
-        })
-        .catch((error) => {
-          toast.error("Erro ao criar usuário adotante.");
-          console.error("Erro ao criar usuário adotante. ", error);
+            if (nomeEncontrado === adotante.user.username) {
+              toast.warning("Nome de usuário deve ser único");
+            } else if (nomeEncontrado === "" || nomeEncontrado == null) {
+              AuthService.cadastroAdotante(adotante)
+                .then((response) => {
+                  console.log("Usuário adotante criado com sucesso!  ", response);
+                  toast.success("Usuário adotante criado com sucesso!  ");
+                  navigate("/login");
+                })
+                .catch((error) => {
+                  toast.error("Erro ao criar usuário adotante.");
+                  console.error("Erro ao criar usuário adotante. ", error);
+                });
+            }
         });
-    }
   };
 
   return (
@@ -190,6 +190,7 @@ export function CadAdotantesPage() {
               <DatePicker
                 value={form.data_nascimento}
                 name="data_nascimento"
+                format="DD/MM/YYYY"
                 onChange={(date) => {
                   if (date) {
                     setForm({ ...form, data_nascimento: date });

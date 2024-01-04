@@ -33,6 +33,8 @@ export function EditaAdotantePage() {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [nvSenError, setNvSenError] = useState("");
+  const [confSenError, setConfSenError] = useState("");
+
   const isPasswordValid = (password: string) => {
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
     return passwordRegex.test(password);
@@ -92,18 +94,24 @@ export function EditaAdotantePage() {
       [field]: value,
     }));
 
-    if (field === "novaSenha" || field === "confirmarSenha") {
+    if (field === "novaSenha") {
       const isValid = isPasswordValid(value);
-      if(!isValid){
-        setNvSenError(isValid ? "" : "Senha inválida! Deve conter 8 caracteres com letras maiúsculas, minúsculas e números.");
-      } else {
-        if (modalValue.novaSenha !== modalValue.confirmarSenha) {
-          setNvSenError("As senhas não coincidem");
-        } else {
-          setNvSenError("");
-        }
+      setNvSenError(isValid ? "" : "Senha inválida! Deve conter 8 caracteres com letras maiúsculas, minúsculas e números.");
+
+      if (isValid && value === modalValue.confirmarSenha) {
+        setConfSenError("");
+      } else if (value !== modalValue.confirmarSenha) {
+        setNvSenError("As senhas não coincidem");
       }
-      
+    } else if (field === "confirmarSenha") {
+      const isValid = isPasswordValid(value);
+      setConfSenError(isValid ? "" : "Senha inválida! Deve conter 8 caracteres com letras maiúsculas, minúsculas e números.");
+
+      if (isValid && value === modalValue.novaSenha) {
+        setNvSenError("");
+      } else if (value !== modalValue.novaSenha) {
+        setConfSenError("As senhas não coincidem");
+      }
     }
   };
 
@@ -318,7 +326,7 @@ export function EditaAdotantePage() {
           <Form.Item label="Nova Senha" help={nvSenError} validateStatus={nvSenError ? "error" : ""}>
             <Input.Password value={modalValue.novaSenha} onChange={(e) => onModalValueChange('novaSenha', e.target.value)}/>
           </Form.Item>
-          <Form.Item label="Confirmar senha" help={nvSenError} validateStatus={nvSenError ? "error" : ""}>
+          <Form.Item label="Confirmar senha" help={confSenError} validateStatus={confSenError ? "error" : ""}>
             <Input.Password value={modalValue.confirmarSenha} onChange={(e) => onModalValueChange('confirmarSenha', e.target.value)}/>
           </Form.Item>
         </Form>

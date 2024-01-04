@@ -80,9 +80,9 @@ export function ListaLinksDenunciaPage(){
         <div className="container-fluid">
             <ToastContainer />
             <h1 className="text-center titulo">Links para Denúncia</h1>
-            <div className="row row-cols-1 row-cols-md-2 row-cols-lg-2 g-4 mb-2 mt-2 d-flex justify-content-center align-items-center">
-            {data.map((links: LinksUteis) => (
-                    <div className="col col-md-12 col-lg-5">
+            <div className="row g-4 mb-2 mt-2">
+                {data.map((links: LinksUteis) => (
+                    <div className="d-flex justify-content-center">
                         <Card
                             className="cardTam"
                             style={{ marginTop: 10 }}

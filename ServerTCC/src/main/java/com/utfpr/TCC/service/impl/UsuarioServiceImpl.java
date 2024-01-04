@@ -56,4 +56,14 @@ public class UsuarioServiceImpl extends CrudServiceImpl<Usuarios, Long> implemen
 		
 		usuariosRepository.deleteById(id);
 	}
+
+	@Override
+	public Usuarios mudarSenha(Usuarios usuario, String senha) {
+		if(senha == null || senha.isEmpty()) {
+			return usuario;
+		} else {
+			usuario.setPassword(senha);
+			return save(usuario);
+		}		
+	}
 }

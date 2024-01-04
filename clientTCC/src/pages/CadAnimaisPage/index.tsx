@@ -31,6 +31,7 @@ export function CadAnimaisPage() {
     nome: "",
     porte: "",
     especie: "",
+    conteudoImagem: "",
   }
 
   const navigate = useNavigate();
@@ -222,10 +223,11 @@ export function CadAnimaisPage() {
               </Select>
             </Form.Item>
 
-            <Form.Item className="col-md-5 col-sm-12">
-              <label className="form-label me-2">
-                Imagens
-              </label>
+            <Form.Item<FieldType>
+                        label="Imagens"
+                        name="conteudoImagem"
+                        rules={[{ required: true, message: 'O campo imagens é obrigatório!' }]} 
+                    className="col-md-5 col-sm-12">
               <Upload
                 action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
                 name="imagens"

@@ -174,7 +174,7 @@ export function DetalhesAnimaisPage(){
                             <p>Os horários de atendimento informados pela entidade são das <span className="fw-bold">{animal.entidade.inicio_atendimento}</span> até as <span className="fw-bold">{animal.entidade.fim_atendimento}</span>.</p>
                             <div className="mb-3">
                                 <label className="fw-bold me-2">Data da visita:</label>
-                                <DatePicker value={modalValue.data_visita} name="data_visita" onChange={(date) => {
+                                <DatePicker value={modalValue.data_visita} name="data_visita" format="DD/MM/YYYY" onChange={(date) => {
                                         if (date) {
                                             setModalValue({ ...modalValue, data_visita: date });
                                         }

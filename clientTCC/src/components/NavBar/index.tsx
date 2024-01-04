@@ -7,11 +7,12 @@ import { useState, useEffect } from "react";
 import UsuarioService from "../../services/UsuarioService";
 import { UserLogin } from "../../commons/interfaces";
 
-export function NavBar(){
+export function NavBar() {
   const [nome, setNome] = useState("");
   const [encontrado, setEncontrado] = useState(false);
   const [roleAdmin, setRoleAdmin] = useState(false);
   const [roleUser, setRoleUser] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
 
   const onClickLogout = () => {
     AuthService.logout();
@@ -25,31 +26,31 @@ export function NavBar(){
   const returnVal = () => {
     const nomeStorage = localStorage.getItem("user");
     if (nomeStorage && nomeStorage !== 'undefined') {
-        setEncontrado(true);
-        setNome(JSON.parse(nomeStorage).toString());
+      setEncontrado(true);
+      setNome(JSON.parse(nomeStorage).toString());
 
-        UsuarioService.findByName(JSON.parse(nomeStorage).toString())
-          .then((response) => {
-            const userResponse = response.data;
+      UsuarioService.findByName(JSON.parse(nomeStorage).toString())
+        .then((response) => {
+          const userResponse = response.data;
 
-            const userLogin: UserLogin = {
-              id: userResponse.id,
-              username: userResponse.username,
-              password: userResponse.password,
-              tipoUsuario: userResponse.tipoUsuario,
-            };
+          const userLogin: UserLogin = {
+            id: userResponse.id,
+            username: userResponse.username,
+            password: userResponse.password,
+            tipoUsuario: userResponse.tipoUsuario,
+          };
 
-            if(userLogin.tipoUsuario === "adotante"){
-              setRoleAdmin(false);
-              setRoleUser(true);
-            } else if(userLogin.tipoUsuario === "entidade"){
-              setRoleAdmin(true);
-              setRoleUser(false);
-            }
-          })
-          .catch((error) => {
-            console.error("Erro ao buscar usuário: ", error);
-          });
+          if (userLogin.tipoUsuario === "adotante") {
+            setRoleAdmin(false);
+            setRoleUser(true);
+          } else if (userLogin.tipoUsuario === "entidade") {
+            setRoleAdmin(true);
+            setRoleUser(false);
+          }
+        })
+        .catch((error) => {
+          console.error("Erro ao buscar usuário: ", error);
+        });
     }
   }
 
@@ -87,12 +88,16 @@ export function NavBar(){
     },
   ];
 
-  return(
-      <div>
-        <nav id="navAni" className="navbar navbar-expand">
-          <Link to="/" className="navbar-brand">
-            <img id="logoAni" src={logo} width="60" className="rounded-circle ms-4 me-2" alt="Animais"/>
-          </Link>
+  return (
+    <div>
+      <nav id="navAni" className="navbar navbar-expand-lg navbar-light">
+        <Link to="/" className="navbar-brand">
+          <img id="logoAni" src={logo} width="60" className="rounded-circle ms-4 me-2" alt="Animais" />
+        </Link>
+        <button id="btnTonggle" className="navbar-toggler me-3" type="button" onClick={() => setShowMenu(!showMenu)}>
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className={`collapse navbar-collapse ${showMenu ? 'show' : ''}`}>
           <ul className="navbar-nav mx-auto mb-2 mb-md-0">
             <li className="nav-item">
               <NavLink
@@ -114,35 +119,44 @@ export function NavBar(){
                 Animais
               </NavLink>
             </li>
-            {roleAdmin ? <li className="nav-item">
-              <NavLink
-                to="/CadAnimais"
-                className={(navData) =>
-                  navData.isActive ? "nav-link active" : "nav-link"
-                }
-              >
-                Cadastro de animais
-              </NavLink>
-            </li> : <li></li>}
-            {roleAdmin ? <li className="nav-item">
-              <NavLink
-                to="/CadLinks"
-                className={(navData) =>
-                  navData.isActive ? "nav-link active" : "nav-link"
-                }
-              >
-                Cadastro de links
-              </NavLink>
-            </li> : <li></li>}
+            {roleAdmin && (
+              <li className="nav-item">
+                <NavLink
+                  to="/CadAnimais"
+                  className={(navData) =>
+                    navData.isActive ? "nav-link active" : "nav-link"
+                  }
+                >
+                  Cadastro de animais
+                </NavLink>
+              </li>
+            )}
+            {roleAdmin && (
+              <li className="nav-item">
+                <NavLink
+                  to="/CadLinks"
+                  className={(navData) =>
+                    navData.isActive ? "nav-link active" : "nav-link"
+                  }
+                >
+                  Cadastro de links
+                </NavLink>
+              </li>
+            )}
           </ul>
-          {encontrado ? <div className="d-flex align-items-center">
-            <Space direction="vertical">
-              <Dropdown menu={{ items }} placement="bottomRight">
-                <button id="btnNav" className="btn">{nome}</button>
-              </Dropdown>
-            </Space>
-        </div> : <div></div>}
-        </nav>
-      </div>
+          {encontrado && (
+            <div className="d-flex align-items-center">
+              <Space direction="vertical">
+                <Dropdown menu={{ items }} placement="bottomRight">
+                  <button id="btnNav" className="btn">
+                    {nome}
+                  </button>
+                </Dropdown>
+              </Space>
+            </div>
+          )}
+        </div>
+      </nav>
+    </div>
   );
 }

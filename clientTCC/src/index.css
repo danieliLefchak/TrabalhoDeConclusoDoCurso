@@ -29,6 +29,15 @@
     padding: .2rem;
 }
 
+.navbar-toggler:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+#btnTonggle{
+    border: none;
+}
+
 #btnNav{
     border: none;
     color: var(--cinzaLogoPassaro);
@@ -120,7 +129,7 @@
 
 .cardTam {
     background-color: var(--verdeCardLink);
-    width: 32rem; 
+    width: 50rem; 
     height: 11rem; 
 }
 
@@ -187,13 +196,12 @@
     position: static;
 }
 
-.bannerButtons{
+.btnPrf{
     position: absolute;
-    top: 7rem;
-    right: 4rem;
-    display: flex;
+    right: 0;
     gap: 2.3rem;
     font-size: 1.3rem;
+    margin-right: 2rem;
 }
 
 .text-format{

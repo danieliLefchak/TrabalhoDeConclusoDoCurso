@@ -21,8 +21,8 @@ export function EditaEntidadePage() {
     telefone: '',
     email: '',
     mensagem: '',
-    inicio_atendimento: '',
-    fim_atendimento: '',
+    inicio_atendimento: dayjs(),
+    fim_atendimento: dayjs(),
     user: { id: undefined, username: "", password: "", tipoUsuario: "entidade" },
   });
 
@@ -33,6 +33,8 @@ export function EditaEntidadePage() {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [nvSenError, setNvSenError] = useState("");
+  const [confSenError, setConfSenError] = useState("");
+
   const isPasswordValid = (password: string) => {
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
     return passwordRegex.test(password);
@@ -91,19 +93,25 @@ export function EditaEntidadePage() {
       ...prev,
       [field]: value,
     }));
-
-    if (field === "novaSenha" || field === "confirmarSenha") {
+    
+    if (field === "novaSenha") {
       const isValid = isPasswordValid(value);
-      if(!isValid){
-        setNvSenError(isValid ? "" : "Senha inválida! Deve conter 8 caracteres com letras maiúsculas, minúsculas e números.");
-      } else {
-        if (modalValue.novaSenha !== modalValue.confirmarSenha) {
-          setNvSenError("As senhas não coincidem");
-        } else {
-          setNvSenError("");
-        }
+      setNvSenError(isValid ? "" : "Senha inválida! Deve conter 8 caracteres com letras maiúsculas, minúsculas e números.");
+
+      if (isValid && value === modalValue.confirmarSenha) {
+        setConfSenError("");
+      } else if (value !== modalValue.confirmarSenha) {
+        setNvSenError("As senhas não coincidem");
       }
-      
+    } else if (field === "confirmarSenha") {
+      const isValid = isPasswordValid(value);
+      setConfSenError(isValid ? "" : "Senha inválida! Deve conter 8 caracteres com letras maiúsculas, minúsculas e números.");
+
+      if (isValid && value === modalValue.novaSenha) {
+        setNvSenError("");
+      } else if (value !== modalValue.novaSenha) {
+        setConfSenError("As senhas não coincidem");
+      }
     }
   };
 
@@ -268,7 +276,7 @@ export function EditaEntidadePage() {
                 name="inicio_atendimento"
                 onChange={(time) => {
                   if (time) {
-                    setEntidade({ ...entidade, inicio_atendimento: time });
+                    setEntidade({ ...entidade, inicio_atendimento: time.format("HH:mm:ss") });
                   }
                 }}
               />
@@ -283,7 +291,7 @@ export function EditaEntidadePage() {
                 name="fim_atendimento"
                 onChange={(time) => {
                   if (time) {
-                    setEntidade({ ...entidade, fim_atendimento: time });
+                    setEntidade({ ...entidade, fim_atendimento: time.format("HH:mm:ss") });
                   }
                 }}
               />
@@ -313,7 +321,7 @@ export function EditaEntidadePage() {
           <Form.Item label="Nova Senha" help={nvSenError} validateStatus={nvSenError ? "error" : ""}>
             <Input.Password value={modalValue.novaSenha} onChange={(e) => onModalValueChange('novaSenha', e.target.value)}/>
           </Form.Item>
-          <Form.Item label="Confirmar senha" help={nvSenError} validateStatus={nvSenError ? "error" : ""}>
+          <Form.Item label="Confirmar senha" help={confSenError} validateStatus={confSenError ? "error" : ""}>
             <Input.Password value={modalValue.confirmarSenha} onChange={(e) => onModalValueChange('confirmarSenha', e.target.value)}/>
           </Form.Item>
         </Form>

@@ -63,10 +63,9 @@ public class PossiveisAdotantesController extends CrudController<PossiveisAdotan
 			PossiveisAdotantes ent = possiveisAdotantesService.findOne(id);
 			
 			if(ent != null) {
-				Usuarios user = adotante.getAdotante().getUser();
+				usuario.mudarSenha(adotante.getAdotante().getUser(), 
+						adotante.getNovaSenha().getNovaSenha());
 				
-				user.setPassword(adotante.getNovaSenha().getNovaSenha());
-				usuario.save(user);
 				possiveisAdotantesService.save(adotante.getAdotante());
 				return new GenericResponse("Registro atualizado com sucesso");
 			} else {

@@ -2,6 +2,8 @@ package com.utfpr.TCC.model;
 
 import java.time.LocalTime;
 
+import org.hibernate.validator.constraints.br.CNPJ;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,9 +30,10 @@ public class Entidades{
 	@NotNull
 	private String nomeFant;
 	
+	@NotNull
+	@CNPJ
 	private String cnpj;
 	
-	@NotNull
 	private String endereco;
 	
 	@NotNull
@@ -44,10 +47,13 @@ public class Entidades{
 	
 	private long numero_casa;
 	
+	@NotNull
+	@Pattern(regexp = "^(\\+55)?[0-9]{2}[-.\\s]?[0-9]{4,5}[-.\\s]?[0-9]{4}$")
 	private String telefone;
 	
-	/*@Pattern(regexp = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@" 
-	        + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$")*/
+	@NotNull
+	@Pattern(regexp = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@" 
+	        + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$")
 	private String email;
 	
 	private String mensagem;

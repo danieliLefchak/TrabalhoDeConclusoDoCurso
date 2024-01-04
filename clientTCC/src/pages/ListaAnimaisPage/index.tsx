@@ -84,22 +84,41 @@ export function ListaAnimaisPage(){
 
     const handleFilterChange = (filter: string | null, term: string) => {
         if (filter === "especie") {
-          AnimaisService.findByEspecie(term)
+          AnimaisService.findByEspecie(term.toLowerCase())
             .then((response) => {
               setData(response.data);
+                
+              if(response.data.length === 0){
+                toast('Não existem animais cadastrados com essa espécie!');
+              }
             })
             .catch((error) => {
               toast.error('Falha ao filtrar por espécie.');
             });
         } else if (filter === "porte") {
-          AnimaisService.findByPorte(term)
+          if(term === "medio" || term === "Medio"){
+             term = "médio";
+          }
+          AnimaisService.findByPorte(term.toLowerCase())
             .then((response) => {
               setData(response.data);
+
+              if(response.data.length === 0){
+                toast('Não existem animais cadastrados com esse porte!');
+              }
             })
             .catch((error) => {
               toast.error('Falha ao filtrar por porte.');
             });
-        }
+        } else if (filter === "todos") {
+            AnimaisService.findAll()
+              .then((response) => {
+                setData(response.data);
+              })
+              .catch((error) => {
+                toast.error('Falha ao filtrar animais.');
+              });
+          }
     };
 
     return(

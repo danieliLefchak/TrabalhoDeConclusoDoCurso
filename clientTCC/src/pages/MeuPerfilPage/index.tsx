@@ -10,6 +10,7 @@ import UsuarioService from "../../services/UsuarioService";
 import { ToastContainer, toast } from 'react-toastify';
 import AuthService from "../../services/AuthService";
 import { useNavigate } from "react-router-dom";
+import 'dayjs/locale/pt-br'
 
 export function MeuPerfilPage() {
   var nomeStorage: any = localStorage.getItem("user");
@@ -163,9 +164,19 @@ export function MeuPerfilPage() {
         <div>
           <img src={Perfil2} className="logoPrf rounded-circle" alt="Animais"/>
         </div>
-        <div className="bannerButtons">
-          <p>Deletar perfil: <DeleteOutlined className="ms-2" key="delete" onClick={handleDelete}/></p>
-          <p>Editar pertfil: <EditOutlined className="ms-2" key="edit" onClick={handleEdit}/></p>
+        <div className="btnPrf">
+          <p className="d-sm-none"> {/* Esta classe tornará apenas o ícone visível em telas pequenas */}
+            <DeleteOutlined className="ms-2" key="delete" onClick={handleDelete}/>
+          </p>
+          <p className="d-sm-none"> {/* Esta classe tornará apenas o ícone visível em telas pequenas */}
+            <EditOutlined className="ms-2" key="edit" onClick={handleEdit}/>
+          </p>
+          <p className="d-none d-sm-block"> {/* Esta classe tornará o texto visível em telas maiores que sm */}
+            Deletar perfil: <DeleteOutlined className="ms-2" key="delete" onClick={handleDelete}/>
+          </p>
+          <p className="d-none d-sm-block"> {/* Esta classe tornará o texto visível em telas maiores que sm */}
+            Editar perfil: <EditOutlined className="ms-2" key="edit" onClick={handleEdit}/>
+          </p>
         </div>
       </div>
       
@@ -228,7 +239,7 @@ export function MeuPerfilPage() {
               <strong>Profissão:</strong> {adotante.profissao}
             </div>
             <div className="col-md-4 col-sm-6 col-12 mb-3">
-              <strong>Data Nasc.:</strong> {adotante.data_nascimento.toString()}
+              <strong>Data Nasc.:</strong> {dayjs(adotante.data_nascimento).format('DD/MM/YYYY')}
             </div>
             <div className="col-md-4 col-sm-6 col-12 mb-3">
               <strong>Endereço:</strong> {adotante.endereco}

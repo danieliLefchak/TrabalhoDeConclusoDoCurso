@@ -28,16 +28,21 @@ export function CadEntidadePage() {
     username: "",
     password: "",
     nomeFant: "",
-    endereco: "",
+    cnpj: "",
     cidade: "",
     bairro: "",
     estado: "",
+    telefone: "",
+    email: "",
+    mensagem: "",
     inicio_atendimento: "",
     fim_atendimento: "",
   }
 
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [cnpjError, setCnpjError] = useState("");
+  const [telefoneError, setTelefoneError] = useState("");
 
   const navigate = useNavigate();
   var nomeEncontrado = "";
@@ -50,9 +55,19 @@ export function CadEntidadePage() {
   const isPasswordValid = (password: string) => {
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
     return passwordRegex.test(password);
-  };  
+  };
 
-  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const isCnpjValid = (cnpj: string) => {
+    const cnpjRegex = /^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/;
+    return cnpjRegex.test(cnpj);
+  };
+
+  const isTelefoneValid = (telefone: string) => {
+    const telefoneRegex = /^(\+55)?[0-9]{2}[-.\s]?[0-9]{4,5}[-.\s]?[0-9]{4}$/;
+    return telefoneRegex.test(telefone);
+  };
+
+  const onChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { value, name } = event.target;
     setForm((previousForm) => {
       return {
@@ -64,6 +79,12 @@ export function CadEntidadePage() {
     if (name === "email") {
       const isValid = isEmailValid(value);
       setEmailError(isValid ? "" : "Formato de e-mail inválido");
+    } else if (name === "cnpj") {
+      const isValidCnpj = isCnpjValid(value);
+      setCnpjError(isValidCnpj ? "" : "Formato de CNPJ inválido");
+    } else if (name === "telefone") {
+      const isValidTelefone = isTelefoneValid(value);
+      setTelefoneError(isValidTelefone ? "" : "Formato de telefone inválido");
     }
   };
 
@@ -87,7 +108,7 @@ export function CadEntidadePage() {
       ...form,
       numero_casa: form.numero_casa!,
       inicio_atendimento: form.inicio_atendimento.format("HH:mm:ss"),
-      fim_atendimento: form.inicio_atendimento.format("HH:mm:ss"),
+      fim_atendimento: form.fim_atendimento.format("HH:mm:ss"),
       user: {
         username: form.user.username,
         password: form.user.password,
@@ -98,26 +119,27 @@ export function CadEntidadePage() {
     UsuarioService.findByName(entidade.user.username)
       .then((responseName) => {
         nomeEncontrado = responseName.data.username;
-      });
 
-      if(nomeEncontrado === entidade.user.username){
-        toast.warning("Nome de usuário deve ser único");
-      } else if(nomeEncontrado === ""){
-        AuthService.cadastroEntidade(entidade)
-        .then((response) => {
-          console.log("Usuário entidade criado com sucesso! ", response);
-          toast.success("Usuário entidade criado com sucesso! ");
-          navigate("/login");
-        })
-        .catch((error) => {
-          toast.error("Erro ao criar usuário entidade.");
-          console.error("Erro ao criar usuário entidade. ", error);
-        });
-      }
+        if(nomeEncontrado === entidade.user.username){
+          toast.warning("Nome de usuário deve ser único");
+        } else if (nomeEncontrado === "" || nomeEncontrado == null){
+          AuthService.cadastroEntidade(entidade)
+          .then((response) => {
+            console.log("Usuário entidade criado com sucesso! ", response);
+            toast.success("Usuário entidade criado com sucesso! ");
+            navigate("/login");
+          })
+          .catch((error) => {
+            toast.error("Erro ao criar usuário entidade.");
+            console.error("Erro ao criar usuário entidade. ", error);
+          });
+        }
+      });
   };
 
   return (
-    <div className="container d-flex justify-content-center">
+    <div className="container">
+      <div className="d-flex justify-content-center">
       <ToastContainer />
       <Card id="cardCad" className="mb-3 mt-5">
         <h2 id="cadText" className="text-center mb-5 mt-2">
@@ -169,11 +191,13 @@ export function CadEntidadePage() {
                 onChange={onChange}
               />
             </Form.Item>
-            <Form.Item className="col-md-5 col-sm-12">
-              <label className="form-label">
-                CNPJ
-              </label>
-              <Input name="cnpj" value={form.cnpj} onChange={onChange} />
+            <Form.Item<FieldType>
+                        label="CNPJ"
+                        name="cnpj"
+                        rules={[{ required: true, message: 'O campo cnpj é obrigatório!'}]} 
+                className="col-md-5 col-sm-12" help={cnpjError}
+                validateStatus={cnpjError ? "error" : ""}>
+              <Input placeholder="##.###.###/####-##" name="cnpj" value={form.cnpj} onChange={onChange} />
             </Form.Item>
             <Form.Item className="col-md-2 col-sm-12">
               <label className="form-label">
@@ -185,11 +209,7 @@ export function CadEntidadePage() {
                 onChange={onChange}
               />
             </Form.Item>
-            <Form.Item<FieldType>
-                        label="Endereço"
-                        name="endereco"
-                        rules={[{ required: true, message: 'O campo endereço é obrigatório!'}]} 
-                className="col-md-5 col-sm-12">
+            <Form.Item label="Endereço" className="col-md-5 col-sm-12">
               <Input
                 name="endereco"
                 value={form.endereco}
@@ -217,32 +237,26 @@ export function CadEntidadePage() {
                 className="col-md-3 col-sm-12">
               <Input name="estado" value={form.estado} onChange={onChange} />
             </Form.Item>
-            <Form.Item className="col-md-4 col-sm-12">
-              <label className="form-label">
-                Telefone
-              </label>
+            <Form.Item<FieldType>
+                        label="Telefone"
+                        name="telefone"
+                        rules={[{ required: true, message: 'O campo telefone é obrigatório!'}]} 
+                className="col-md-4 col-sm-12" help={telefoneError}
+                validateStatus={telefoneError ? "error" : ""}>
               <Input
+                placeholder="(__) _____-____"
                 name="telefone"
                 value={form.telefone}
                 onChange={onChange}
               />
             </Form.Item>
-            <Form.Item className="col-md-5 col-sm-12" help={emailError}
+            <Form.Item<FieldType>
+                        label="E-mail"
+                        name="email"
+                        rules={[{ required: true, message: 'O campo e-mail é obrigatório!'}]} 
+                className="col-md-5 col-sm-12" help={emailError}
                 validateStatus={emailError ? "error" : ""}>
-              <label className="form-label">
-                E-mail
-              </label>
               <Input name="email" value={form.email} onChange={onChange} />
-            </Form.Item>
-            <Form.Item className="col-md-6 col-sm-12">
-              <label className="form-label">
-                Mensagem
-              </label>
-              <Input
-                name="mensagem"
-                value={form.mensagem}
-                onChange={onChange}
-              />
             </Form.Item>
             <Form.Item<FieldType>
                         label="Hora inicio"
@@ -276,6 +290,16 @@ export function CadEntidadePage() {
                 }}
               />
             </Form.Item>
+            <Form.Item className="col-md-6 col-sm-12">
+              <label className="form-label">
+                Mensagem
+              </label>
+              <Input.TextArea
+                name="mensagem"
+                value={form.mensagem}
+                onChange={onChange}
+              />
+            </Form.Item>
           </div>
 
           <div className="row justify-content-center mt-4">
@@ -291,6 +315,8 @@ export function CadEntidadePage() {
           </div>
         </Form>
       </Card>
+    </div>
+        <p className="text-format">** Ao clicar em salvar você está concordando em deixar alguns de seus dados como horários de atendimento, cnpj, e-mail, entre outros vísiveis ao público geral.</p>
     </div>
   );
 }

@@ -14,17 +14,21 @@ import com.utfpr.TCC.minio.FileTypeUtils;
 import com.utfpr.TCC.minio.MinioService;
 import com.utfpr.TCC.model.Animais;
 import com.utfpr.TCC.model.Entidades;
+import com.utfpr.TCC.model.Interessados;
 import com.utfpr.TCC.repository.AnimaisRepository;
+import com.utfpr.TCC.repository.InteressadosRepository;
 import com.utfpr.TCC.service.AnimaisService;
 
 @Service
 public class AnimaisServiceImpl extends CrudServiceImpl<Animais, Long> implements AnimaisService{
 	private final AnimaisRepository animaisRepository;
 	private final MinioService minioService;
+	private final InteressadosRepository interessadosRepository;
 	
-	public AnimaisServiceImpl(AnimaisRepository animaisRepository, MinioService minioService) {
+	public AnimaisServiceImpl(AnimaisRepository animaisRepository, MinioService minioService, InteressadosRepository interessadosRepository) {
 		this.animaisRepository = animaisRepository;
 		this.minioService = minioService;
+		this.interessadosRepository = interessadosRepository;
 	}
 	
 	@Override
@@ -148,6 +152,27 @@ public class AnimaisServiceImpl extends CrudServiceImpl<Animais, Long> implement
 	    }
 
 	    return animaisRepository.save(entity);
+	}
+	
+	@Override
+	public void delete(Long id) {
+		Animais animal = super.findOne(id);
+		List<Interessados> interessadosRelacionados = interessadosRepository.findByAnimais(animal);
+		
+		if(interessadosRelacionados.isEmpty() || interessadosRelacionados == null) {
+			animaisRepository.deleteById(id);
+		} else {
+			for (Interessados interessados : interessadosRelacionados) {
+				interessadosRepository.delete(interessados);
+			}
+			
+			interessadosRelacionados = interessadosRepository.findByAnimais(animal);
+			
+			if(interessadosRelacionados.isEmpty() || interessadosRelacionados == null) {
+				animaisRepository.deleteById(id);
+			} 
+		}
+		
 	}
 	
 	@Override

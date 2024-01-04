@@ -57,10 +57,10 @@ export function LoginPage(){
         <div className="container-fluid d-flex justify-content-center align-items-center">
           <ToastContainer/>
             <Card id="cardCadLogin">
-                <h2 id="cadText" className="text-center mb-4 mt-2">Login</h2>
+                <h2 id="cadText" className="text-center mb-4 mt-1">Login</h2>
                 <Form layout="vertical" onFinishFailed={onFinishFailed}>
 
-                    <h6 id="cadText" className="text-center mb-5 fw-bolder">Informações para login</h6>
+                    <h6 id="cadText" className="text-center mb-4 fw-bolder">Informações para login</h6>
                     <div className="row justify-content-center">
                         <Form.Item<FieldType>
                                   label="Nome de usuário"
@@ -80,7 +80,7 @@ export function LoginPage(){
                         </Form.Item>
                     </div>
                                     
-                    <div className="row justify-content-center mt-3">
+                    <div className="row justify-content-center mt-2">
                         <Form.Item  className="col-1">
                             <button type="submit" 
                                     className="btn btn-success"
@@ -91,7 +91,7 @@ export function LoginPage(){
                         </Form.Item>
                     </div>               
                 </Form>
-                <div className="d-flex justify-content-center mt-4">
+                <div className="d-flex justify-content-center mt-3">
                   <div className="me-1">
                     <p>Faça login como <Link to="/CadEntidadePage" className="text-decoration-none text-success fw-bold">
                       entidade

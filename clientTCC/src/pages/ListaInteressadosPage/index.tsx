@@ -4,6 +4,8 @@ import { Card } from "antd";
 import InteressadosService from "../../services/InteressadosService";
 import { ToastContainer, toast } from 'react-toastify';
 import { CheckCircleOutlined, CloseCircleOutlined, EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
+import 'dayjs/locale/pt-br';
+import dayjs from 'dayjs';
 
 export function ListaInteressadosPage(){
     const [data, setData] = useState([]);
@@ -80,7 +82,7 @@ export function ListaInteressadosPage(){
                             <p className="me-3"><strong>E-mail: </strong>{interessado.adotantes.email}</p>
                             <div className="d-flex">
                                 <p className="me-3"><strong>Profissão: </strong>{interessado.adotantes.profissao}</p>
-                                <p><strong>Data Nasc.: </strong>{interessado.adotantes.data_nascimento.toString()}</p>
+                                <p><strong>Data Nasc.: </strong>{dayjs(interessado.adotantes.data_nascimento).format('DD/MM/YYYY')}</p>
                             </div>
                             
                             <div className="d-flex">
@@ -96,7 +98,7 @@ export function ListaInteressadosPage(){
                                 <p><strong>Quantidade: </strong>{interessado.adotantes.quantidade_animais}</p>
                             </div>
                             <div className="d-flex">
-                                <p className="me-3"><strong>Data visita: </strong>{interessado.data_visita.toString()}</p>
+                                <p className="me-3"><strong>Data visita: </strong>{dayjs(interessado.data_visita).format('DD/MM/YYYY')}</p>
                                 <p><strong>Horário visita: </strong>{interessado.horario_visita}</p>
                             </div>
                             

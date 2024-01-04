@@ -3,7 +3,6 @@ package com.utfpr.TCC.controller;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +16,6 @@ import com.utfpr.TCC.dto.EntidadeSenhaDto;
 import com.utfpr.TCC.dto.EntidadesDto;
 import com.utfpr.TCC.model.Entidades;
 import com.utfpr.TCC.model.Usuarios;
-import com.utfpr.TCC.model.NovaSenha;
 import com.utfpr.TCC.service.CrudService;
 import com.utfpr.TCC.service.EntidadeService;
 import com.utfpr.TCC.service.UsuariosService;
@@ -79,7 +77,7 @@ public class EntidadesController extends CrudController<Entidades, EntidadesDto,
 		usuario.save(user);
 		entidadeService.save(entidade);
 		return new GenericResponse("Registro salvo com sucesso");
-	}
+	}	
 	
 	@PutMapping("editar/{id}")
 	public GenericResponse update(@RequestBody @Valid EntidadeSenhaDto entidade, @PathVariable Long id) {
@@ -87,10 +85,9 @@ public class EntidadesController extends CrudController<Entidades, EntidadesDto,
 			Entidades ent = entidadeService.findOne(id);
 			
 			if(ent != null) {
-				Usuarios user = entidade.getEntidade().getUser();
+				usuario.mudarSenha(entidade.getEntidade().getUser(), 
+						entidade.getNovaSenha().getNovaSenha());
 				
-				user.setPassword(entidade.getNovaSenha().getNovaSenha());
-				usuario.save(user);
 				entidadeService.save(entidade.getEntidade());
 				return new GenericResponse("Registro atualizado com sucesso");
 			} else {

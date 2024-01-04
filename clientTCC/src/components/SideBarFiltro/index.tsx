@@ -35,6 +35,7 @@ const SideBarFiltro: React.FC<SidebarProps> = ({ onFilterChange }) => {
           >
             <Option value="especie">Filtrar por Espécie</Option>
             <Option value="porte">Filtrar por Porte</Option>
+            <Option value="todos">Mostrar todos</Option>
           </Select>
           <Input
             placeholder="Digite a espécie ou porte"
